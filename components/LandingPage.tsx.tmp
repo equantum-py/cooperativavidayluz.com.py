@@ -1,0 +1,28 @@
+
+function Hero() {
+  return <section id="inicio" className="min-h-screen" />;
+}
+
+function Stats() {
+  return <section className="py-20" />;
+}
+
+function Services() {
+  return <section id="servicios" className="py-20" />;
+}
+
+function Timeline() {
+  return <section className="py-20" />;
+}
+
+function Benefits() {
+  return <section id="beneficios" className="py-20" />;
+}
+
+function Portal() {
+  return <section id="portal" className="py-20" />;
+}
+
+function Testimonials() {
+  return <section className="py-20" />;
+}
