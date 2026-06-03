@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
+import { LOGO } from '@/lib/images';
 
 const NAV_LINKS = [
   { href: '#servicios', label: 'Servicios' },
@@ -13,63 +14,31 @@ const NAV_LINKS = [
 ];
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 24);
-    window.addEventListener('scroll', handler, { passive: true });
-    handler();
-    return () => window.removeEventListener('scroll', handler);
-  }, []);
-
   return (
-    <header
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? 'bg-white/85 backdrop-blur-xl shadow-elevation-1 border-b border-black/[0.06]'
-          : 'bg-transparent'
-      }`}
-    >
+    <header className="fixed top-0 inset-x-0 z-50 bg-white border-b border-gray-100 shadow-sm">
       <nav className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-        {/* Logo */}
+
+        {/* Logo — sits directly on the white navbar, no extra wrapper needed */}
         <a href="#inicio" className="flex items-center shrink-0">
-          {/*
-            The logo PNG has a white background.
-            When the navbar is transparent (over the dark hero) we wrap it in a
-            white pill so it stays legible. Once the user scrolls and the navbar
-            turns white, the pill becomes invisible (bg-transparent / no padding)
-            and the logo blends naturally into the page.
-          */}
-          <div
-            className={`transition-all duration-500 ${
-              scrolled
-                ? 'bg-transparent rounded-xl px-0 py-0'
-                : 'bg-white/95 rounded-xl px-3 py-1.5 shadow-sm'
-            }`}
-          >
-            <Image
-              src="/images/logo.png"
-              alt="Cooperativa Vida & Luz"
-              width={120}
-              height={36}
-              priority
-              className="h-9 w-auto object-contain"
-            />
-          </div>
+          <Image
+            src={LOGO.src}
+            alt={LOGO.alt}
+            width={200}
+            height={60}
+            priority
+            className="h-14 w-auto object-contain"
+          />
         </a>
 
-        {/* Desktop nav */}
+        {/* Desktop nav links */}
         <div className="hidden md:flex items-center gap-0.5">
           {NAV_LINKS.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className={`px-4 py-2 rounded-xl text-[13.5px] font-medium transition-all duration-200 ${
-                scrolled
-                  ? 'text-gray-600 hover:text-gray-900 hover:bg-gray-100/80'
-                  : 'text-white/65 hover:text-white hover:bg-white/10'
-              }`}
+              className="px-4 py-2 rounded-xl text-[13.5px] font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100/80 transition-all duration-200"
             >
               {link.label}
             </a>
@@ -80,9 +49,7 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-3">
           <a
             href="#portal"
-            className={`text-[13.5px] font-medium transition-colors duration-200 ${
-              scrolled ? 'text-gray-600 hover:text-gray-900' : 'text-white/60 hover:text-white'
-            }`}
+            className="text-[13.5px] font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200"
           >
             Iniciar sesión
           </a>
@@ -96,9 +63,7 @@ export default function Navbar() {
 
         {/* Mobile toggle */}
         <button
-          className={`md:hidden p-2.5 rounded-xl transition-all ${
-            scrolled ? 'text-gray-700 hover:bg-gray-100' : 'text-white hover:bg-white/10'
-          }`}
+          className="md:hidden p-2.5 rounded-xl text-gray-700 hover:bg-gray-100 transition-all"
           onClick={() => setOpen((v) => !v)}
           aria-label="Abrir menú"
         >
@@ -130,7 +95,7 @@ export default function Navbar() {
         </button>
       </nav>
 
-      {/* Mobile dropdown */}
+      {/* Mobile dropdown — structure and animations unchanged */}
       <AnimatePresence>
         {open && (
           <motion.div

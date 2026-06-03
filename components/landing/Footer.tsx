@@ -50,13 +50,13 @@ export default function Footer() {
                 <span className="font-bold text-[15px] text-white tracking-tight">
                   Vida &amp; Luz
                 </span>
-                <span className="text-[9px] uppercase tracking-[0.18em] text-white/30 font-medium">
+                <span className="text-[9px] uppercase tracking-[0.18em] text-white/55 font-medium">
                   Cooperativa
                 </span>
               </div>
             </div>
 
-            <p className="text-white/42 text-[14px] leading-relaxed max-w-xs mb-7">
+            <p className="text-white/68 text-[14px] leading-relaxed max-w-xs mb-7">
               Institución financiera cooperativa regulada por INCOOP, al servicio de las
               familias y emprendedores de Paraguay desde 1994.
             </p>
@@ -68,7 +68,7 @@ export default function Footer() {
                 { Icon: Phone, text: '(021) 600-7000' },
                 { Icon: Mail, text: 'info@vidaluz.com.py' },
               ].map(({ Icon, text }) => (
-                <div key={text} className="flex items-center gap-2.5 text-white/38 text-[13px]">
+                <div key={text} className="flex items-center gap-2.5 text-white/65 text-[13px]">
                   <Icon size={13} className="text-emerald-500/70 flex-shrink-0" />
                   {text}
                 </div>
@@ -85,13 +85,13 @@ export default function Footer() {
               viewport={{ once: true }}
               transition={{ delay: colIndex * 0.1, duration: 0.45 }}
             >
-              <p className="text-white text-[13px] font-semibold mb-4">{category}</p>
+              <p className="text-white text-[13px] font-bold mb-4 tracking-wide">{category}</p>
               <ul className="space-y-2.5">
                 {links.map((link) => (
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="text-white/40 hover:text-white/80 text-[13px] transition-colors duration-200"
+                      className="text-white/60 hover:text-white/95 text-[13px] transition-colors duration-200"
                     >
                       {link.label}
                     </a>
@@ -105,10 +105,10 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="pt-7 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-center sm:text-left">
-            <p className="text-white/28 text-[12px]">
+            <p className="text-white/55 text-[12px]">
               © 2024 Cooperativa Vida &amp; Luz. Todos los derechos reservados.
             </p>
-            <p className="text-white/20 text-[11px] mt-1">
+            <p className="text-white/42 text-[11px] mt-1">
               Regulada por INCOOP · RUC: 80001234-5 · Resolución INCOOP N° 3456/94
             </p>
           </div>
@@ -126,10 +126,10 @@ export default function Footer() {
               </a>
             ))}
             <div className="w-px h-5 bg-white/[0.1]" />
-            <a href="#" className="text-white/28 hover:text-white/55 text-[12px] transition-colors">
+            <a href="#" className="text-white/52 hover:text-white/80 text-[12px] transition-colors">
               Privacidad
             </a>
-            <a href="#" className="text-white/28 hover:text-white/55 text-[12px] transition-colors">
+            <a href="#" className="text-white/52 hover:text-white/80 text-[12px] transition-colors">
               Términos
             </a>
           </div>
