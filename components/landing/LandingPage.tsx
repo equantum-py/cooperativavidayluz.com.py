@@ -2,6 +2,7 @@
 
 import Navbar from './Navbar';
 import Hero from './Hero';
+import ValueProp from './ValueProp';
 import Stats from './Stats';
 import Services from './Services';
 import HowItWorks from './HowItWorks';
@@ -17,6 +18,7 @@ export default function LandingPage() {
     <main className="bg-white text-gray-900 overflow-x-hidden">
       <Navbar />
       <Hero />
+      <ValueProp />
       <Stats />
       <Services />
       <HowItWorks />
