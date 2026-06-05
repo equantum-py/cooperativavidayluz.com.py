@@ -14,3 +14,5 @@ tsconfig.tsbuildinfo
 
 # Datos persistidos localmente
 .data/
+
+/generated/prisma

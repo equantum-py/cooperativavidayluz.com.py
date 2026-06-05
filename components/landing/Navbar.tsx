@@ -9,7 +9,7 @@ import { LOGO } from '@/lib/images';
 const NAV_LINKS = [
   { href: '#servicios', label: 'Servicios' },
   { href: '#como-funciona', label: 'Cómo funciona' },
-  { href: '#portal', label: 'Portal' },
+  { href: '/login', label: 'Portal' },
   { href: '#nosotros', label: 'Nosotros' },
 ];
 
@@ -48,7 +48,7 @@ export default function Navbar() {
         {/* Desktop CTAs */}
         <div className="hidden md:flex items-center gap-3">
           <a
-            href="#portal"
+            href="/login"
             className="text-[13.5px] font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200"
           >
             Iniciar sesión
@@ -121,7 +121,7 @@ export default function Navbar() {
               ))}
               <div className="mt-3 pt-3 border-t border-gray-100 flex flex-col gap-2.5">
                 <a
-                  href="#portal"
+                  href="/login"
                   className="py-2.5 text-center text-[15px] font-medium text-gray-600"
                 >
                   Iniciar sesión
