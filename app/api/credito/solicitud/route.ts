@@ -10,7 +10,7 @@ function serverValidate(b: Record<string, unknown>): string | null {
     return 'Nombre inválido';
   if (!b.ci || !/^\d{5,8}$/.test(String(b.ci).replace(/\D/g, '')))
     return 'Cédula inválida';
-  const tel = String(b.telefono ?? '').replace(/[\s\-\(\)]/g, '');
+  const tel = String(b.telefono ?? '').replace(/[\s\-()]/g, '');
   if (!tel || !/^(\+?595|0)9\d{7,9}$/.test(tel))
     return 'Teléfono inválido';
   if (!b.direccion || !b.barrio) return 'Dirección requerida';

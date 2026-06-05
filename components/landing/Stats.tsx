@@ -1,11 +1,12 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import type { ElementType } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Users, Clock, Banknote, Star } from 'lucide-react';
 
 interface Stat {
-  icon: React.ElementType;
+  icon: ElementType;
   prefix: string;
   value: number;
   suffix: string;

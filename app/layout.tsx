@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import type { Metadata, Viewport } from 'next';
 import { Inter, Poppins } from 'next/font/google';
 import './globals.css';
@@ -33,7 +34,7 @@ export const viewport: Viewport = {
   themeColor: '#0F8F4F',
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="es-PY" className="scroll-smooth">
       <body className={`${inter.variable} ${poppins.variable} bg-light font-sans text-dark antialiased`}>

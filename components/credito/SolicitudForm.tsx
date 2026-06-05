@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   User,
@@ -65,7 +65,7 @@ function validate(f: FormData): Errors {
   if (!ciNum) e.ci = 'La cédula es requerida';
   else if (!/^\d{5,8}$/.test(ciNum)) e.ci = 'La cédula debe tener entre 5 y 8 dígitos';
 
-  const tel = f.telefono.replace(/[\s\-\(\)]/g, '');
+  const tel = f.telefono.replace(/[\s\-()]/g, '');
   if (!tel) e.telefono = 'El teléfono es requerido';
   else if (!/^(\+?595|0)9\d{7,9}$/.test(tel))
     e.telefono = 'Formato válido: 0981 123456 o +595 981 123456';
