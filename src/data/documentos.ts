@@ -87,3 +87,5 @@ export const CATEGORIAS = [
   { id: 'formularios', name: 'Formularios para Socios' },
   { id: 'cumplimiento', name: 'Cumplimiento Normativo' },
 ] as const;
+
+export const DOCUMENT_CATEGORIES = CATEGORIAS.map((cat) => ({ id: cat.id, label: cat.name }));

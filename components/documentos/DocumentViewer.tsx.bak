@@ -1,0 +1,101 @@
+'use client';
+
+import { useState, Suspense, lazy } from 'react';
+import dynamic from 'next/dynamic';
+import { Documento } from '@/src/data/documentos';
+import { Download, ZoomIn, ZoomOut, ChevronLeft, ChevronRight } from 'lucide-react';
+
+const PDFViewer = dynamic(
+  () => import('./PDFViewer'),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex items-center justify-center h-96 text-gray-500">
+        Cargando visor PDF...
+      </div>
+    ),
+  }
+);
+
+interface DocumentViewerProps {
+  documento: Documento;
+}
+
+const getCategoryColor = (category: string): string => {
+  switch (category) {
+    case 'institucional':
+      return 'text-blue-600';
+    case 'formularios':
+      return 'text-green-600';
+    case 'cumplimiento':
+      return 'text-purple-600';
+    default:
+      return 'text-gray-600';
+  }
+};
+
+const getCategoryLabel = (category: string): string => {
+  switch (category) {
+    case 'institucional':
+      return 'Documento Institucional';
+    case 'formularios':
+      return 'Formulario';
+    case 'cumplimiento':
+      return 'Documento de Cumplimiento';
+    default:
+      return category;
+  }
+};
+
+export function DocumentViewer({ documento }: DocumentViewerProps) {
+  const downloadUrl = `/documentos/${documento.file}`;
+
+  return (
+    <div className="w-full">
+      {/* Información del Documento */}
+      <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
+        <div className="flex items-center gap-3 mb-4">
+          <div className={`p-3 rounded-lg ${getCategoryColor(documento.category).replace('text', 'bg').replace('600', '100')}`}>
+            <span className={`text-2xl`}>📄</span>
+          </div>
+          <span className={`font-semibold text-lg ${getCategoryColor(documento.category)}`}>
+            {getCategoryLabel(documento.category)}
+          </span>
+        </div>
+
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">{documento.title}</h1>
+        <p className="text-gray-600 mb-6">{documento.description}</p>
+
+        <div className="flex flex-wrap gap-6 text-sm text-gray-600 mb-6">
+          <div className="flex items-center gap-2">
+            <span>📅 Actualizado: {documento.updatedAt}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span>📦 Tamaño: {documento.fileSize}</span>
+          </div>
+        </div>
+
+        <a
+          href={downloadUrl}
+          download
+          className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-semibold rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 shadow-md hover:shadow-lg"
+        >
+          <Download className="w-5 h-5" />
+          Descargar PDF
+        </a>
+      </div>
+
+      {/* Visor PDF */}
+      <Suspense fallback={<div className="flex items-center justify-center h-96 text-gray-500">Cargando visor...</div>}>
+        <PDFViewer url={downloadUrl} />
+      </Suspense>
+
+      {/* Pie de página */}
+      <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <p className="text-sm text-gray-700">
+          <span className="font-semibold text-blue-900">Nota:</span> Este documento es proporcionado por la Cooperativa Vida y Luz. Para más información sobre este documento, por favor contáctenos.
+        </p>
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,51 @@
+
+> cooperativa-vida-y-luz@1.0.0 build
+> next build
+
+   ▲ Next.js 15.5.19
+   - Environments: .env.local, .env
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 27.1s
+   Skipping linting
+   Checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/21) ...
+   Generating static pages (5/21) 
+   Generating static pages (10/21) 
+   Generating static pages (15/21) 
+ ✓ Generating static pages (21/21)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                    15.4 kB         165 kB
+├ ○ /_not-found                            993 B         103 kB
+├ ○ /admin/creditos                      2.99 kB         105 kB
+├ ƒ /api/admin/creditos                    134 B         103 kB
+├ ƒ /api/admin/creditos/[id]               134 B         103 kB
+├ ƒ /api/auth/login                        134 B         103 kB
+├ ƒ /api/auth/me                           134 B         103 kB
+├ ƒ /api/credito/solicitud                 134 B         103 kB
+├ ○ /credito/solicitud                   5.74 kB         156 kB
+├ ○ /documentos                            777 B         107 kB
+├ ● /documentos/[slug]                   1.22 kB         108 kB
+├   ├ /documentos/estatuto-social
+├   ├ /documentos/certificado-incoop
+├   ├ /documentos/solicitud-ingreso
+├   └ [+4 more paths]
+├ ○ /historia                            1.44 kB         143 kB
+├ ○ /login                               1.14 kB         104 kB
+└ ○ /portal                              1.21 kB         104 kB
++ First Load JS shared by all             102 kB
+  ├ chunks/255-98a0bdaa30757bda.js       46.2 kB
+  ├ chunks/4bd1b696-c023c6e3521b1417.js  54.2 kB
+  └ other shared chunks (total)          1.92 kB
+
+
+ƒ Middleware                             34.3 kB
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+
