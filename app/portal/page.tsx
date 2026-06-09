@@ -125,7 +125,7 @@ function DashboardContent({ user }: { user: User }) {
               Portal del Socio
             </p>
             <h2 className="text-[#0F172A] text-2xl font-bold tracking-tight leading-snug mb-4">
-              Hola, {user.nombre}
+              Bienvenido al Portal del Socio
             </h2>
             <p className="text-[#64748B] text-[14.5px] leading-relaxed">
               Bienvenido al Portal del Socio de la Cooperativa Vida &amp; Luz.
@@ -178,6 +178,40 @@ function DashboardContent({ user }: { user: User }) {
                 </div>
               </a>
             ))}
+          </div>
+        </section>
+
+
+        {/* ── Resumen financiero ───────────────────── */}
+        <section>
+          <p className="text-[11px] font-semibold text-[#94A3B8] uppercase tracking-[0.09em] mb-4">
+            Resumen financiero
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+            <div className="bg-white rounded-2xl border border-[#E2E8F0] p-6">
+              <p className="text-sm text-[#64748B]">Ahorro acumulado</p>
+              <h3 className="text-2xl font-bold text-[#0F172A] mt-2">₲ 18.500.000</h3>
+              <p className="text-xs text-[#94A3B8] mt-2">Actualizado este mes</p>
+            </div>
+
+            <div className="bg-white rounded-2xl border border-[#E2E8F0] p-6">
+              <p className="text-sm text-[#64748B]">Disponible</p>
+              <h3 className="text-2xl font-bold text-[#0F172A] mt-2">₲ 6.250.000</h3>
+              <p className="text-xs text-[#94A3B8] mt-2">Saldo utilizable</p>
+            </div>
+
+            <div className="bg-white rounded-2xl border border-[#E2E8F0] p-6">
+              <p className="text-sm text-[#64748B]">Préstamo activo</p>
+              <h3 className="text-2xl font-bold text-[#0F172A] mt-2">₲ 12.000.000</h3>
+              <p className="text-xs text-[#94A3B8] mt-2">Crédito vigente</p>
+            </div>
+
+            <div className="bg-white rounded-2xl border border-[#E2E8F0] p-6">
+              <p className="text-sm text-[#64748B]">Cuota pendiente</p>
+              <h3 className="text-2xl font-bold text-[#0F172A] mt-2">₲ 350.000</h3>
+              <p className="text-xs text-[#94A3B8] mt-2">Vence 15/06/2026</p>
+            </div>
           </div>
         </section>
 
