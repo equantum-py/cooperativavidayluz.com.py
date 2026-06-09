@@ -15,16 +15,16 @@ export default function DocumentCard({ documento }: DocumentCardProps) {
                                     <div className="text-3xl">📄</div>div>
                                     <span className="text-xs text-white/60 bg-white/[0.05] px-2 py-1 rounded">
                                             {documento.fileSize}
-                                    </span>span>
-                            </div>div>
+                                    </span>
+                            </div>
                       
                             <h3 className="text-lg font-semibold text-white mb-2 line-clamp-2">
-                                    {documento.title}
-                            </h3>h3>
+                                    {documento.t
+                            </h3>
                       
                             <p className="text-sm text-white/70 mb-4 line-clamp-2">
                                     {documento.description}
-                            </p>p>
+                            </p
                       
                             <div className="flex items-center justify-between gap-3">
                                     <Link
@@ -34,7 +34,7 @@ export default function DocumentCard({ documento }: DocumentCardProps) {
                                                     >
                                               <Eye size={16} />
                                               Ver
-                                    </Link>Link>
+                                    </Link>
                             
                                     <a
                                                       href={documento.file}
@@ -44,8 +44,8 @@ export default function DocumentCard({ documento }: DocumentCardProps) {
                                                     >
                                               <Download size={16} />
                                               Descargar
-                                    </a>a>
-                            </div>div>
-                      </div>div>
+                                    </a>
+                            </div>
+                      </div>
                     );
-}</div>
+}
