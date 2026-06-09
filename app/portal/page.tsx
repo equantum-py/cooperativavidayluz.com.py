@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { FileText, ClipboardList, Star, User, ArrowRight } from 'lucide-react';
 import PortalSidebar from '@/components/portal/PortalSidebar';
 import PortalHeader from '@/components/portal/PortalHeader';
 
@@ -13,304 +14,242 @@ interface User {
   estado: string;
 }
 
-// ── Small icon components ─────────────────────────────────────────────────────
-function TrendUpIcon() {
+// ── Access cards ──────────────────────────────────────────────────────────────
+const ACCESS_CARDS = [
+  {
+    id: 'documentos',
+    title: 'Documentos',
+    description: 'Reglamentos, estatutos y formularios disponibles para socios.',
+    Icon: FileText,
+    iconColor: '#2B9348',
+    iconBg: '#F0FDF4',
+    linkLabel: 'Ver documentos',
+    linkColor: '#2B9348',
+    href: '/documentos',
+  },
+  {
+    id: 'solicitudes',
+    title: 'Solicitudes',
+    description: 'Consultá el estado de tus trámites y solicitudes activas.',
+    Icon: ClipboardList,
+    iconColor: '#2563EB',
+    iconBg: '#EFF6FF',
+    linkLabel: 'Ver solicitudes',
+    linkColor: '#2563EB',
+    href: '/credito/solicitud',
+  },
+  {
+    id: 'beneficios',
+    title: 'Beneficios',
+    description: 'Conocé los convenios y beneficios exclusivos para socios.',
+    Icon: Star,
+    iconColor: '#D97706',
+    iconBg: '#FFFBEB',
+    linkLabel: 'Ver beneficios',
+    linkColor: '#D97706',
+    href: '/',
+  },
+  {
+    id: 'perfil',
+    title: 'Mi Perfil',
+    description: 'Actualizá tus datos de contacto e información personal.',
+    Icon: User,
+    iconColor: '#7C3AED',
+    iconBg: '#F5F3FF',
+    linkLabel: 'Ver perfil',
+    linkColor: '#7C3AED',
+    href: '#',
+  },
+] as const;
+
+// ── Shield illustration (inline SVG, no image files) ─────────────────────────
+function InstitutionalIllustration() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-      <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <polyline points="17 6 23 6 23 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      width="140"
+      height="120"
+      viewBox="0 0 140 120"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      {/* Outer ring */}
+      <circle cx="70" cy="60" r="52" stroke="#E2E8F0" strokeWidth="1.5" strokeDasharray="4 4" />
+      {/* Mid ring */}
+      <circle cx="70" cy="60" r="36" fill="#F8FAFC" stroke="#E2E8F0" strokeWidth="1" />
+      {/* Shield */}
+      <path
+        d="M70 26L46 36v15c0 13.5 10.2 26.1 24 29.4C83.8 77.1 94 64.5 94 51V36L70 26z"
+        fill="#F0FDF4"
+        stroke="#2B9348"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+      {/* Check inside shield */}
+      <path
+        d="M61 51l6 6 12-12"
+        stroke="#2B9348"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      {/* Decorative dots */}
+      <circle cx="30" cy="38" r="3.5" fill="#E2E8F0" />
+      <circle cx="110" cy="82" r="3.5" fill="#E2E8F0" />
+      <circle cx="116" cy="34" r="2.5" fill="#BBF7D0" />
+      <circle cx="24" cy="82" r="2.5" fill="#BBF7D0" />
+      {/* Small lines */}
+      <line x1="20" y1="58" x2="34" y2="58" stroke="#E2E8F0" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="106" y1="58" x2="120" y2="58" stroke="#E2E8F0" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
   );
 }
 
-function CardIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-      <rect x="2" y="5" width="20" height="14" rx="3" stroke="currentColor" strokeWidth="2"/>
-      <path d="M2 10h20" stroke="currentColor" strokeWidth="2"/>
-    </svg>
-  );
-}
-
-function PiggyIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-      <path d="M19 11H5a2 2 0 00-2 2v6a2 2 0 002 2h14a2 2 0 002-2v-6a2 2 0 00-2-2z" stroke="currentColor" strokeWidth="2"/>
-      <path d="M16 11V7a4 4 0 00-8 0v4" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-      <line x1="12" y1="15" x2="12" y2="17" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-    </svg>
-  );
-}
-
-function StarIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
-    </svg>
-  );
-}
-
-function SendIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-      <line x1="22" y1="2" x2="11" y2="13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-      <polygon points="22 2 15 22 11 13 2 9 22 2" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
-    </svg>
-  );
-}
-
-function DownloadIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <polyline points="7 10 12 15 17 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-    </svg>
-  );
-}
-
-function PlusIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-      <line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-      <line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-    </svg>
-  );
-}
-
-function HelpIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
-      <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M12 17h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-    </svg>
-  );
-}
-
-// ── Dashboard content section ─────────────────────────────────────────────────
-function DashboardSection({ user }: { user: User }) {
-  const quickActions = [
-    { icon: <PlusIcon />, label: 'Nuevo depósito', color: '#2b9348' },
-    { icon: <SendIcon />, label: 'Transferir', color: '#007f5f' },
-    { icon: <DownloadIcon />, label: 'Extracto', color: '#55a630' },
-    { icon: <HelpIcon />, label: 'Soporte', color: '#80b918' },
-  ];
-
-  const transactions = [
-    { type: 'in', label: 'Depósito mensual', date: '05 Jun 2025', amount: '+₲ 800.000' },
-    { type: 'out', label: 'Cuota crédito #2031', date: '03 Jun 2025', amount: '-₲ 350.000' },
-    { type: 'in', label: 'Intereses acumulados', date: '01 Jun 2025', amount: '+₲ 24.500' },
-    { type: 'out', label: 'Seguro de vida', date: '28 May 2025', amount: '-₲ 45.000' },
-    { type: 'in', label: 'Depósito mensual', date: '05 May 2025', amount: '+₲ 800.000' },
-  ];
+// ── Dashboard section ─────────────────────────────────────────────────────────
+function DashboardContent({ user }: { user: User }) {
+  const ROL_LABEL: Record<string, string> = {
+    admin: 'Administrador', socio: 'Socio', empleado: 'Empleado',
+  };
 
   return (
-    <div className="p-6 space-y-6">
-      {/* Welcome banner */}
-      <div
-        className="relative rounded-3xl overflow-hidden p-6 md:p-8"
-        style={{ background: 'linear-gradient(135deg, #0C1C17 0%, #1A3428 100%)', border: '1px solid rgba(0,127,95,0.2)' }}
-      >
-        {/* Aurora */}
-        <div
-          className="pointer-events-none absolute -top-16 -right-16 w-64 h-64 rounded-full opacity-25 animate-aurora-move"
-          style={{ background: 'radial-gradient(circle, #2b9348 0%, transparent 70%)' }}
-        />
-        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <p className="text-white/50 text-sm mb-1">Bienvenido de vuelta,</p>
-            <h2 className="text-white font-bold text-2xl">{user.nombre}</h2>
-            <p className="text-white/40 text-sm mt-1">CI {user.ci} · Socio {user.estado}</p>
-          </div>
-          <div
-            className="flex items-center gap-2 self-start sm:self-auto rounded-2xl px-4 py-2"
-            style={{ background: 'rgba(43,147,72,0.2)', border: '1px solid rgba(43,147,72,0.3)' }}
-          >
-            <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: '#2b9348' }} />
-            <span className="text-white/70 text-xs font-medium">Cuenta activa</span>
-          </div>
-        </div>
-      </div>
+    <main className="flex-1 overflow-y-auto bg-[#F8FAFC]">
+      <div className="max-w-4xl mx-auto px-8 py-10 space-y-8">
 
-      {/* KPI cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-        {[
-          {
-            label: 'Saldo en ahorros',
-            value: '₲ 4.250.000',
-            delta: '+3.2% este mes',
-            positive: true,
-            icon: <PiggyIcon />,
-            grad: 'linear-gradient(135deg, rgba(43,147,72,0.18), rgba(0,127,95,0.08))',
-            accent: '#2b9348',
-          },
-          {
-            label: 'Crédito disponible',
-            value: '₲ 12.000.000',
-            delta: 'Cuota: ₲ 350.000',
-            positive: null,
-            icon: <CardIcon />,
-            grad: 'linear-gradient(135deg, rgba(0,127,95,0.18), rgba(12,28,23,0.5))',
-            accent: '#007f5f',
-          },
-          {
-            label: 'Puntos de beneficios',
-            value: '1.840 pts',
-            delta: '+120 este mes',
-            positive: true,
-            icon: <StarIcon />,
-            grad: 'linear-gradient(135deg, rgba(128,185,24,0.15), rgba(12,28,23,0.5))',
-            accent: '#80b918',
-          },
-          {
-            label: 'Rendimiento anual',
-            value: '8,5 %',
-            delta: 'Sobre ahorro total',
-            positive: true,
-            icon: <TrendUpIcon />,
-            grad: 'linear-gradient(135deg, rgba(85,166,48,0.18), rgba(12,28,23,0.5))',
-            accent: '#55a630',
-          },
-        ].map((card) => (
-          <div
-            key={card.label}
-            className="rounded-3xl p-5"
-            style={{ background: card.grad, border: '1px solid rgba(0,127,95,0.18)' }}
-          >
-            <div className="flex items-start justify-between mb-4">
-              <p className="text-white/50 text-xs font-medium leading-tight">{card.label}</p>
-              <span style={{ color: card.accent }}>{card.icon}</span>
-            </div>
-            <p className="text-white font-bold text-xl mb-1">{card.value}</p>
-            <div className="flex items-center gap-1">
-              {card.positive === true && <TrendUpIcon />}
-              <p className="text-xs" style={{ color: card.positive === true ? '#2b9348' : card.positive === false ? '#ef4444' : 'rgba(255,255,255,0.35)' }}>
-                {card.delta}
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Quick actions */}
-      <div>
-        <h3 className="text-white/60 text-xs font-semibold uppercase tracking-wider mb-3">Acciones rápidas</h3>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {quickActions.map((action) => (
-            <button
-              key={action.label}
-              className="flex flex-col items-center gap-2 rounded-2xl py-4 px-3 transition-all hover:scale-105 active:scale-95"
-              style={{ background: 'rgba(0,127,95,0.10)', border: '1px solid rgba(0,127,95,0.18)' }}
-            >
-              <span
-                className="w-10 h-10 rounded-xl flex items-center justify-center"
-                style={{ background: `${action.color}22`, color: action.color }}
-              >
-                {action.icon}
-              </span>
-              <p className="text-white/70 text-xs font-medium text-center leading-tight">{action.label}</p>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Bottom grid: transactions + member card */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Transactions */}
-        <div
-          className="lg:col-span-2 rounded-3xl p-5"
-          style={{ background: 'rgba(0,127,95,0.06)', border: '1px solid rgba(0,127,95,0.15)' }}
+        {/* ── Hero de bienvenida ─────────────────────────── */}
+        <section
+          className="bg-white rounded-2xl border border-[#E2E8F0] px-10 py-9 flex items-center justify-between gap-6"
+          style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04)' }}
         >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-white font-semibold text-sm">Últimos movimientos</h3>
-            <button className="text-xs font-medium px-3 py-1 rounded-lg transition-colors" style={{ color: '#2b9348', background: 'rgba(43,147,72,0.12)' }}>
-              Ver todos
-            </button>
+          <div className="flex-1 max-w-[520px]">
+            <p className="text-[#2B9348] text-sm font-semibold mb-3">
+              Portal del Socio
+            </p>
+            <h2 className="text-[#0F172A] text-2xl font-bold tracking-tight leading-snug mb-4">
+              Hola, {user.nombre}
+            </h2>
+            <p className="text-[#64748B] text-[14.5px] leading-relaxed">
+              Bienvenido al Portal del Socio de la Cooperativa Vida &amp; Luz.
+              Desde este espacio podrás gestionar tus documentos, consultar
+              solicitudes, acceder a beneficios exclusivos y mantener actualizada
+              tu información, todo en un entorno seguro y diseñado para nuestros
+              socios.
+            </p>
           </div>
-          <div className="space-y-1">
-            {transactions.map((tx, i) => (
-              <div
-                key={i}
-                className="flex items-center justify-between py-3 border-b last:border-0"
-                style={{ borderColor: 'rgba(0,127,95,0.12)' }}
+          <div className="hidden md:block shrink-0 opacity-80">
+            <InstitutionalIllustration />
+          </div>
+        </section>
+
+        {/* ── Acceso rápido ──────────────────────────────── */}
+        <section>
+          <p className="text-[11px] font-semibold text-[#94A3B8] uppercase tracking-[0.09em] mb-4">
+            Acceso rápido
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+            {ACCESS_CARDS.map(({ id, title, description, Icon, iconColor, iconBg, linkLabel, linkColor, href }) => (
+              <a
+                key={id}
+                href={href}
+                className="group bg-white rounded-2xl border border-[#E2E8F0] p-6 flex flex-col transition-all no-underline"
+                style={{ boxShadow: '0 1px 2px rgba(0,0,0,0.04)' }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)';
+                  (e.currentTarget as HTMLElement).style.borderColor = '#CBD5E1';
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.boxShadow = '0 1px 2px rgba(0,0,0,0.04)';
+                  (e.currentTarget as HTMLElement).style.borderColor = '#E2E8F0';
+                }}
               >
-                <div className="flex items-center gap-3">
-                  <div
-                    className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-xs font-bold"
-                    style={{
-                      background: tx.type === 'in' ? 'rgba(43,147,72,0.18)' : 'rgba(239,68,68,0.12)',
-                      color: tx.type === 'in' ? '#2b9348' : '#ef4444',
-                    }}
-                  >
-                    {tx.type === 'in' ? '↑' : '↓'}
-                  </div>
-                  <div>
-                    <p className="text-white text-xs font-medium">{tx.label}</p>
-                    <p className="text-white/30 text-xs">{tx.date}</p>
-                  </div>
-                </div>
-                <p
-                  className="text-xs font-semibold"
-                  style={{ color: tx.type === 'in' ? '#2b9348' : '#ef4444' }}
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center mb-4 shrink-0"
+                  style={{ background: iconBg }}
                 >
-                  {tx.amount}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Member card */}
-        <div
-          className="rounded-3xl p-5 flex flex-col"
-          style={{ background: 'linear-gradient(145deg, #122218, #0C1C17)', border: '1px solid rgba(0,127,95,0.2)' }}
-        >
-          <p className="text-white/50 text-xs font-semibold uppercase tracking-wider mb-4">Tu tarjeta de socio</p>
-
-          {/* Virtual card */}
-          <div
-            className="relative rounded-2xl p-5 flex-1 overflow-hidden mb-4"
-            style={{ background: 'linear-gradient(135deg, #007f5f 0%, #2b9348 50%, #55a630 100%)', minHeight: '160px' }}
-          >
-            {/* Pattern */}
-            <div className="absolute inset-0 dot-grid opacity-20" />
-            <div className="relative z-10 h-full flex flex-col justify-between">
-              <div className="flex justify-between items-start">
-                <div>
-                  <p className="text-white/60 text-xs uppercase tracking-wider">Cooperativa</p>
-                  <p className="text-white font-bold text-sm">Vida &amp; Luz</p>
+                  <Icon size={20} color={iconColor} strokeWidth={1.8} />
                 </div>
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z" fill="white" fillOpacity="0.8"/>
-                </svg>
-              </div>
-              <div>
-                <p className="text-white/70 text-xs mb-1">CI</p>
-                <p className="text-white font-mono font-bold text-sm tracking-widest">{user.ci}</p>
-                <p className="text-white font-semibold text-sm mt-2">{user.nombre}</p>
-              </div>
-            </div>
+                <p className="text-[#0F172A] font-semibold text-[14px] mb-1.5">{title}</p>
+                <p className="text-[#64748B] text-[12.5px] leading-relaxed flex-1">{description}</p>
+                <div
+                  className="flex items-center gap-1.5 mt-4 text-[12.5px] font-semibold"
+                  style={{ color: linkColor }}
+                >
+                  {linkLabel}
+                  <ArrowRight size={12} strokeWidth={2.2} color={linkColor} />
+                </div>
+              </a>
+            ))}
           </div>
+        </section>
 
-          {/* Member info */}
-          <div className="space-y-2">
+        {/* ── Información de cuenta ─────────────────────── */}
+        <section>
+          <p className="text-[11px] font-semibold text-[#94A3B8] uppercase tracking-[0.09em] mb-4">
+            Mi cuenta
+          </p>
+          <div
+            className="bg-white rounded-2xl border border-[#E2E8F0]"
+            style={{ boxShadow: '0 1px 2px rgba(0,0,0,0.04)' }}
+          >
             {[
-              { label: 'Estado', value: user.estado, color: '#2b9348' },
-              { label: 'Rol', value: user.rol === 'socio' ? 'Socio activo' : user.rol },
-              { label: 'Nro. socio', value: `#${String(user.id).padStart(5, '0')}` },
-            ].map((row) => (
-              <div key={row.label} className="flex items-center justify-between">
-                <p className="text-white/40 text-xs">{row.label}</p>
-                <p className="text-xs font-semibold capitalize" style={{ color: row.color ?? 'rgba(255,255,255,0.8)' }}>
-                  {row.value}
-                </p>
+              { key: 'Nombre completo',     value: user.nombre },
+              { key: 'Cédula de Identidad', value: user.ci },
+              {
+                key: 'Estado de cuenta',
+                value: user.estado,
+                highlight: true,
+              },
+              { key: 'Categoría',           value: ROL_LABEL[user.rol] ?? user.rol },
+              { key: 'Número de socio',      value: `#${String(user.id).padStart(5, '0')}` },
+            ].map((row, i, arr) => (
+              <div
+                key={row.key}
+                className="flex items-center justify-between px-6 py-4"
+                style={{
+                  borderBottom: i < arr.length - 1 ? '1px solid #F8FAFC' : 'none',
+                }}
+              >
+                <span className="text-[#64748B] text-sm">{row.key}</span>
+                {row.highlight ? (
+                  <span
+                    className="text-[12px] font-semibold px-3 py-1 rounded-full capitalize"
+                    style={{ background: '#F0FDF4', color: '#15803D', border: '1px solid #BBF7D0' }}
+                  >
+                    {row.value}
+                  </span>
+                ) : (
+                  <span className="text-[#0F172A] text-sm font-semibold">{row.value}</span>
+                )}
               </div>
             ))}
           </div>
-        </div>
+        </section>
+
       </div>
-    </div>
+    </main>
+  );
+}
+
+// ── Generic section placeholder ───────────────────────────────────────────────
+function SectionPlaceholder({ title, body, linkLabel, href }: {
+  title: string; body: string; linkLabel?: string; href?: string;
+}) {
+  return (
+    <main className="flex-1 overflow-y-auto bg-[#F8FAFC]">
+      <div className="max-w-lg mx-auto px-8 py-16 text-center">
+        <h2 className="text-[#0F172A] font-bold text-xl mb-3">{title}</h2>
+        <p className="text-[#64748B] text-sm leading-relaxed mb-6">{body}</p>
+        {href && linkLabel && (
+          <a
+            href={href}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white text-sm font-semibold"
+            style={{ background: '#2B9348' }}
+          >
+            {linkLabel}
+            <ArrowRight size={14} strokeWidth={2.2} />
+          </a>
+        )}
+      </div>
+    </main>
   );
 }
 
@@ -325,27 +264,21 @@ export default function PortalPage() {
     const validateToken = async () => {
       try {
         const response = await fetch('/api/auth/me');
-        if (!response.ok) {
-          router.push('/login');
-          return;
-        }
-
+        if (!response.ok) { router.push('/login'); return; }
         const data = await response.json();
         setUser({
-          id: data.user.id,
-          ci: data.user.ci,
+          id:     data.user.id,
+          ci:     data.user.ci,
           nombre: data.user.nombre ?? 'Socio',
-          rol: data.user.rol,
+          rol:    data.user.rol,
           estado: data.user.estado ?? 'activo',
         });
-      } catch (error) {
-        console.error('Error validating token:', error);
+      } catch {
         router.push('/login');
       } finally {
         setLoading(false);
       }
     };
-
     validateToken();
   }, [router]);
 
@@ -354,19 +287,25 @@ export default function PortalPage() {
     router.push('/login');
   };
 
+  const handleNavigate = (section: string) => {
+    if (section === 'logout') { handleLogout(); return; }
+    setActiveSection(section);
+  };
+
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#0C1C17' }}>
+      <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC]">
         <div className="flex flex-col items-center gap-4">
           <div
-            className="w-12 h-12 rounded-2xl flex items-center justify-center animate-pulse"
-            style={{ background: 'linear-gradient(135deg, #2b9348, #007f5f)' }}
+            className="w-11 h-11 rounded-xl flex items-center justify-center"
+            style={{ background: 'linear-gradient(135deg, #2b9348, #1a7a38)' }}
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z" fill="white" fillOpacity="0.9"/>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z"
+                fill="white" fillOpacity="0.95" />
             </svg>
           </div>
-          <p className="text-white/40 text-sm">Cargando tu portal...</p>
+          <p className="text-[#94A3B8] text-sm">Cargando portal…</p>
         </div>
       </div>
     );
@@ -376,49 +315,58 @@ export default function PortalPage() {
 
   const renderSection = () => {
     switch (activeSection) {
-      case 'creditos':
-        return (
-          <div className="p-6">
-            <div className="rounded-3xl p-8 text-center" style={{ background: 'rgba(0,127,95,0.06)', border: '1px solid rgba(0,127,95,0.15)' }}>
-              <p className="text-white font-bold text-xl mb-2">Mis Créditos</p>
-              <p className="text-white/40 text-sm mb-6">Gestioná tus créditos activos y solicitá nuevos préstamos.</p>
-              <a
-                href="/credito/solicitud"
-                className="inline-block px-6 py-3 rounded-2xl text-white text-sm font-semibold transition-all hover:opacity-90"
-                style={{ background: 'linear-gradient(135deg, #2b9348, #007f5f)' }}
-              >
-                Solicitar crédito
-              </a>
-            </div>
-          </div>
-        );
       case 'documentos':
         return (
-          <div className="p-6">
-            <div className="rounded-3xl p-8 text-center" style={{ background: 'rgba(0,127,95,0.06)', border: '1px solid rgba(0,127,95,0.15)' }}>
-              <p className="text-white font-bold text-xl mb-2">Documentos</p>
-              <p className="text-white/40 text-sm mb-6">Accedé a todos tus documentos y reglamentos.</p>
-              <a
-                href="/documentos"
-                className="inline-block px-6 py-3 rounded-2xl text-white text-sm font-semibold transition-all hover:opacity-90"
-                style={{ background: 'linear-gradient(135deg, #2b9348, #007f5f)' }}
-              >
-                Ver documentos
-              </a>
-            </div>
-          </div>
+          <SectionPlaceholder
+            title="Mis Documentos"
+            body="Accedé a todos los documentos disponibles: reglamentos, estatutos y formularios."
+            linkLabel="Ir a documentos"
+            href="/documentos"
+          />
+        );
+      case 'solicitudes':
+        return (
+          <SectionPlaceholder
+            title="Mis Solicitudes"
+            body="Consultá el estado de tus trámites activos y presentá nuevas solicitudes."
+            linkLabel="Solicitar crédito"
+            href="/credito/solicitud"
+          />
+        );
+      case 'beneficios':
+        return (
+          <SectionPlaceholder
+            title="Beneficios para Socios"
+            body="Todos los convenios y beneficios exclusivos disponibles para socios activos."
+          />
+        );
+      case 'perfil':
+        return (
+          <SectionPlaceholder
+            title="Mi Perfil"
+            body="Actualizá tus datos de contacto y preferencias de cuenta."
+          />
+        );
+      case 'ayuda':
+        return (
+          <SectionPlaceholder
+            title="Centro de Ayuda"
+            body="Contactá con nuestro equipo de soporte vía WhatsApp o en nuestras oficinas."
+          />
         );
       default:
-        return <DashboardSection user={user} />;
+        return <DashboardContent user={user} />;
     }
   };
 
   return (
-    <div className="flex h-screen overflow-hidden" style={{ background: '#0A1810' }}>
-      {/* Sidebar */}
-      <PortalSidebar activeSection={activeSection} onNavigate={setActiveSection} />
-
-      {/* Main */}
+    <div className="flex h-screen overflow-hidden bg-[#F8FAFC]">
+      <PortalSidebar
+        activeSection={activeSection}
+        onNavigate={handleNavigate}
+        userName={user.nombre}
+        userRole={user.rol}
+      />
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <PortalHeader
           nombre={user.nombre}
@@ -426,9 +374,7 @@ export default function PortalPage() {
           rol={user.rol}
           onLogout={handleLogout}
         />
-        <main className="flex-1 overflow-y-auto" style={{ background: '#0A1810' }}>
-          {renderSection()}
-        </main>
+        {renderSection()}
       </div>
     </div>
   );

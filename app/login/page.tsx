@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, FormEvent, ChangeEvent } from 'react';
+import { Shield, Lock, CreditCard, Eye, EyeOff, ArrowRight } from 'lucide-react';
 
 interface LoginForm {
   ci: string;
@@ -9,13 +10,13 @@ interface LoginForm {
 
 export default function LoginPage() {
   const [formData, setFormData] = useState<LoginForm>({ ci: '', password: '' });
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError]       = useState('');
+  const [loading, setLoading]   = useState(false);
+  const [showPw, setShowPw]     = useState(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((p) => ({ ...p, [name]: value }));
     setError('');
   };
 
@@ -23,170 +24,143 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setError('');
-
     try {
-      const response = await fetch('/api/auth/login', {
+      const res  = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-
-      const data = await response.json();
-
-      if (!response.ok) {
+      const data = await res.json();
+      if (!res.ok) {
         setError(data.error || 'Credenciales inválidas');
         setLoading(false);
         return;
       }
-
       localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
+      localStorage.setItem('user',  JSON.stringify(data.user));
       window.location.href = '/portal';
-    } catch (err) {
-      console.error(err);
-      setError('Ocurrió un error al iniciar sesión');
+    } catch {
+      setError('Ocurrió un error. Intentá nuevamente.');
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex bg-void overflow-hidden">
-      {/* ── Left hero panel ─────────────────────────────────── */}
-      <div className="hidden lg:flex lg:w-1/2 xl:w-[55%] relative flex-col justify-between p-12 overflow-hidden">
-        {/* Aurora blobs */}
-        <div
-          className="pointer-events-none absolute -top-40 -left-32 w-[600px] h-[600px] rounded-full opacity-30 animate-aurora-move"
-          style={{ background: 'radial-gradient(circle, #007f5f 0%, #2b9348 45%, transparent 75%)' }}
-        />
-        <div
-          className="pointer-events-none absolute bottom-0 right-0 w-[480px] h-[480px] rounded-full opacity-20 animate-aurora-move-2"
-          style={{ background: 'radial-gradient(circle, #55a630 0%, #2b9348 50%, transparent 75%)' }}
-        />
+    <div className="min-h-screen flex bg-[#F8FAFC]">
 
-        {/* Dot grid */}
-        <div className="absolute inset-0 dot-grid opacity-40" />
+      {/* ─────────────────── LEFT — institutional panel ──────────────────── */}
+      <div className="hidden lg:flex lg:w-[52%] flex-col justify-between bg-white border-r border-[#E2E8F0] px-14 py-12 relative overflow-hidden">
 
-        {/* Noise overlay */}
-        <div className="absolute inset-0 noise-overlay" />
+        {/* Very subtle radial tint — no glow, just ambient warmth */}
+        <div className="pointer-events-none absolute -top-40 -right-40 w-[440px] h-[440px] rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(43,147,72,0.045) 0%, transparent 65%)' }} />
+        <div className="pointer-events-none absolute -bottom-28 -left-20 w-80 h-80 rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(43,147,72,0.03) 0%, transparent 65%)' }} />
 
-        {/* Logo / brand */}
-        <div className="relative z-10">
-          <div className="flex items-center gap-3">
-            {/* SVG logo mark */}
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #2b9348, #007f5f)' }}>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z" fill="white" fillOpacity="0.9" />
-                <path d="M9 12l2 2 4-4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-            <div>
-              <p className="text-white font-bold text-lg leading-none">Vida &amp; Luz</p>
-              <p className="text-emerald-400 text-xs font-medium tracking-widest uppercase">Cooperativa</p>
-            </div>
+        {/* Logo */}
+        <div className="relative flex items-center gap-3">
+          <div
+            className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
+            style={{ background: 'linear-gradient(135deg, #2B9348, #1a7a38)' }}
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z"
+                fill="white" fillOpacity="0.95" />
+              <path d="M9 12l2 2 4-4" stroke="white" strokeWidth="2.2"
+                strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+          <div>
+            <p className="text-[#0F172A] font-bold text-[17px] leading-none">Cooperativa Vida &amp; Luz</p>
+            <p className="text-[#94A3B8] text-[11px] mt-1 tracking-[0.1em] uppercase">Juntos, construimos futuro</p>
           </div>
         </div>
 
-        {/* Central content */}
-        <div className="relative z-10 flex-1 flex flex-col justify-center py-12">
-          <h1 className="text-4xl xl:text-5xl font-bold text-white leading-tight mb-6">
-            Tu futuro financiero
-            <span className="block gradient-text-bright">comienza aquí.</span>
+        {/* Hero copy */}
+        <div className="relative flex-1 flex flex-col justify-center py-16 max-w-[440px]">
+          <div
+            className="inline-flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-full mb-8 w-fit border"
+            style={{ background: '#F0FDF4', borderColor: '#BBF7D0', color: '#15803D' }}
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+            Portal del Socio
+          </div>
+
+          <h1 className="text-[42px] font-extrabold text-[#0F172A] leading-[1.12] tracking-tight mb-5">
+            Tu cooperativa,<br />
+            siempre <span style={{ color: '#2B9348' }}>contigo.</span>
           </h1>
-          <p className="text-white/60 text-lg leading-relaxed max-w-sm">
-            Accedé a tu cuenta, gestioná tus ahorros y aprovechá todos los beneficios de ser socio.
+
+          <p className="text-[#64748B] text-[16.5px] leading-relaxed">
+            Accedé a todos tus servicios y beneficios de forma segura. Gestioná
+            tus documentos, solicitudes y más desde un solo lugar.
           </p>
 
-          {/* Stat pills */}
-          <div className="flex flex-wrap gap-3 mt-8">
+          <div className="flex flex-wrap gap-3 mt-10">
             {[
-              { label: '+2.400', desc: 'Socios activos' },
-              { label: '30 años', desc: 'De trayectoria' },
-              { label: '100%', desc: 'Digital' },
-            ].map((s) => (
-              <div key={s.label} className="glass-dark rounded-2xl px-4 py-3">
-                <p className="text-emerald-400 font-bold text-base leading-none">{s.label}</p>
-                <p className="text-white/50 text-xs mt-1">{s.desc}</p>
+              { Icon: Shield, label: 'Conexión segura' },
+              { Icon: Lock,   label: 'Datos encriptados' },
+            ].map(({ Icon, label }) => (
+              <div
+                key={label}
+                className="flex items-center gap-2 border rounded-xl px-4 py-2.5 text-sm font-medium text-[#64748B]"
+                style={{ background: '#F8FAFC', borderColor: '#E2E8F0' }}
+              >
+                <Icon size={14} color="#2B9348" strokeWidth={2} />
+                {label}
               </div>
             ))}
           </div>
         </div>
 
-        {/* Floating card mockup */}
-        <div className="relative z-10 animate-float">
-          <div className="glass-dark rounded-3xl p-5 max-w-xs">
-            {/* Card header */}
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <p className="text-white/50 text-xs uppercase tracking-wider">Saldo disponible</p>
-                <p className="text-white font-bold text-2xl mt-0.5">₲ 4.250.000</p>
-              </div>
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(43,147,72,0.25)' }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                  <rect x="2" y="5" width="20" height="14" rx="3" stroke="#2b9348" strokeWidth="2"/>
-                  <path d="M2 10h20" stroke="#2b9348" strokeWidth="2"/>
-                </svg>
-              </div>
-            </div>
-            {/* Mini transaction list */}
-            {[
-              { icon: '↑', label: 'Depósito mensual', amount: '+₲ 800.000', color: '#2b9348' },
-              { icon: '↓', label: 'Cuota crédito', amount: '-₲ 350.000', color: '#ef4444' },
-              { icon: '↑', label: 'Intereses', amount: '+₲ 24.500', color: '#2b9348' },
-            ].map((t) => (
-              <div key={t.label} className="flex items-center justify-between py-2 border-b border-white/10 last:border-0">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold w-4" style={{ color: t.color }}>{t.icon}</span>
-                  <span className="text-white/70 text-xs">{t.label}</span>
-                </div>
-                <span className="text-xs font-semibold" style={{ color: t.color }}>{t.amount}</span>
-              </div>
-            ))}
-          </div>
-        </div>
+        <p className="text-[#CBD5E1] text-xs relative">
+          © 2025 Cooperativa Vida &amp; Luz · Asunción, Paraguay
+        </p>
       </div>
 
-      {/* ── Right login panel ───────────────────────────────── */}
-      <div className="w-full lg:w-1/2 xl:w-[45%] flex items-center justify-center p-6 lg:p-12 relative">
-        {/* Subtle bg glow for mobile */}
-        <div
-          className="lg:hidden pointer-events-none absolute inset-0 opacity-20"
-          style={{ background: 'radial-gradient(ellipse at 50% 30%, #2b9348 0%, transparent 70%)' }}
-        />
+      {/* ─────────────────── RIGHT — login card ─────────────────────────── */}
+      <div className="w-full lg:w-[48%] flex items-center justify-center px-6 py-12 bg-[#F8FAFC] relative">
 
-        <div className="w-full max-w-md relative z-10">
-          {/* Mobile logo */}
-          <div className="flex items-center gap-3 mb-8 lg:hidden">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #2b9348, #007f5f)' }}>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z" fill="white" fillOpacity="0.9" />
-                <path d="M9 12l2 2 4-4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-            <div>
-              <p className="text-white font-bold text-lg leading-none">Vida &amp; Luz</p>
-              <p className="text-emerald-400 text-xs font-medium tracking-widest uppercase">Cooperativa</p>
-            </div>
+        {/* Mobile logo */}
+        <div className="lg:hidden absolute top-7 left-6 flex items-center gap-2.5">
+          <div
+            className="w-9 h-9 rounded-xl flex items-center justify-center"
+            style={{ background: 'linear-gradient(135deg, #2B9348, #1a7a38)' }}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z"
+                fill="white" fillOpacity="0.95" />
+              <path d="M9 12l2 2 4-4" stroke="white" strokeWidth="2.2"
+                strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </div>
+          <p className="text-[#0F172A] font-bold text-sm">Vida &amp; Luz</p>
+        </div>
 
-          {/* Glass card */}
-          <div className="glass-dark rounded-3xl p-8 lg:p-10" style={{ boxShadow: '0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,127,95,0.2)' }}>
-            <h2 className="text-2xl font-bold text-white mb-1">Bienvenido de vuelta</h2>
-            <p className="text-white/50 text-sm mb-8">Ingresá con tu Cédula de Identidad</p>
+        <div className="w-full max-w-md">
+          <div
+            className="bg-white rounded-3xl border border-[#E2E8F0] px-10 py-11"
+            style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.07)' }}
+          >
+            {/* Card header */}
+            <div className="mb-9">
+              <h2 className="text-[26px] font-bold text-[#0F172A] tracking-tight mb-1.5">
+                Iniciá sesión
+              </h2>
+              <p className="text-[#94A3B8] text-sm">Ingresá con tu Cédula de Identidad</p>
+            </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
-              {/* CI field */}
+
+              {/* CI */}
               <div>
-                <label className="block text-xs font-semibold text-white/60 uppercase tracking-wider mb-2">
+                <label className="block text-[11px] font-semibold text-[#64748B] uppercase tracking-[0.08em] mb-2">
                   Cédula de Identidad
                 </label>
                 <div className="relative">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                      <rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" strokeWidth="2"/>
-                      <circle cx="9" cy="10" r="2" stroke="currentColor" strokeWidth="2"/>
-                      <path d="M13 10h4M13 14h4M5 14h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                    </svg>
-                  </div>
+                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#CBD5E1]">
+                    <CreditCard size={15} strokeWidth={1.8} />
+                  </span>
                   <input
                     type="text"
                     name="ci"
@@ -194,61 +168,67 @@ export default function LoginPage() {
                     onChange={handleChange}
                     required
                     placeholder="Ej: 1234567"
-                    className="w-full bg-white/5 border border-white/10 text-white placeholder-white/20 rounded-2xl pl-11 pr-4 py-3.5 text-sm focus:outline-none focus:border-emerald-600 focus:bg-white/8 transition-all"
+                    className="w-full bg-[#F8FAFC] border border-[#E2E8F0] text-[#0F172A] placeholder-[#CBD5E1] rounded-xl pl-10 pr-4 py-3 text-sm outline-none transition-all focus:border-[#2B9348] focus:bg-white"
+                    style={{ fontSize: '14px' }}
                   />
                 </div>
               </div>
 
-              {/* Password field */}
+              {/* Password */}
               <div>
-                <label className="block text-xs font-semibold text-white/60 uppercase tracking-wider mb-2">
+                <label className="block text-[11px] font-semibold text-[#64748B] uppercase tracking-[0.08em] mb-2">
                   Contraseña
                 </label>
                 <div className="relative">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                      <rect x="5" y="11" width="14" height="10" rx="2" stroke="currentColor" strokeWidth="2"/>
-                      <path d="M8 11V7a4 4 0 018 0v4" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                    </svg>
-                  </div>
+                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#CBD5E1]">
+                    <Lock size={15} strokeWidth={1.8} />
+                  </span>
                   <input
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPw ? 'text' : 'password'}
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
                     required
                     placeholder="Ingresá tu contraseña"
-                    className="w-full bg-white/5 border border-white/10 text-white placeholder-white/20 rounded-2xl pl-11 pr-12 py-3.5 text-sm focus:outline-none focus:border-emerald-600 focus:bg-white/8 transition-all"
+                    className="w-full bg-[#F8FAFC] border border-[#E2E8F0] text-[#0F172A] placeholder-[#CBD5E1] rounded-xl pl-10 pr-11 py-3 text-sm outline-none transition-all focus:border-[#2B9348] focus:bg-white"
+                    style={{ fontSize: '14px' }}
                   />
                   <button
                     type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60 transition-colors"
+                    onClick={() => setShowPw(!showPw)}
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#CBD5E1] hover:text-[#94A3B8] transition-colors"
                   >
-                    {showPassword ? (
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                        <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                        <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                        <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                      </svg>
-                    ) : (
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" strokeWidth="2"/>
-                        <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2"/>
-                      </svg>
-                    )}
+                    {showPw
+                      ? <EyeOff size={15} strokeWidth={1.8} />
+                      : <Eye    size={15} strokeWidth={1.8} />}
                   </button>
                 </div>
               </div>
 
+              {/* Options */}
+              <div className="flex items-center justify-between pt-0.5">
+                <label className="flex items-center gap-2 text-sm text-[#64748B] cursor-pointer select-none">
+                  <input type="checkbox" className="w-4 h-4 rounded border-[#E2E8F0] accent-[#2B9348]" />
+                  Recordarme
+                </label>
+                <button type="button" className="text-sm font-medium" style={{ color: '#2B9348' }}>
+                  ¿Olvidaste tu contraseña?
+                </button>
+              </div>
+
               {/* Error */}
               {error && (
-                <div className="flex items-start gap-3 bg-red-500/10 border border-red-500/20 rounded-2xl px-4 py-3">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-red-400 mt-0.5 shrink-0">
-                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M12 8v4M12 16h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                <div
+                  className="flex items-start gap-2.5 rounded-xl px-4 py-3 border text-sm leading-snug"
+                  style={{ background: '#FEF2F2', borderColor: '#FECACA', color: '#B91C1C' }}
+                >
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    strokeWidth="2" className="mt-0.5 shrink-0">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="8" x2="12" y2="12" strokeLinecap="round" />
+                    <line x1="12" y1="16" x2="12.01" y2="16" strokeLinecap="round" />
                   </svg>
-                  <p className="text-red-400 text-sm">{error}</p>
+                  {error}
                 </div>
               )}
 
@@ -256,36 +236,50 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3.5 rounded-2xl text-white font-semibold text-sm transition-all disabled:opacity-60 disabled:cursor-not-allowed relative overflow-hidden"
-                style={{ background: 'linear-gradient(135deg, #2b9348, #007f5f)' }}
+                className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl text-white text-sm font-semibold transition-opacity disabled:opacity-60 disabled:cursor-not-allowed mt-1"
+                style={{ background: '#2B9348', boxShadow: '0 2px 8px rgba(43,147,72,0.25)' }}
               >
                 {loading ? (
-                  <span className="flex items-center justify-center gap-2">
+                  <>
                     <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
-                      <circle cx="12" cy="12" r="10" stroke="white" strokeWidth="3" strokeOpacity="0.3"/>
-                      <path d="M12 2a10 10 0 0110 10" stroke="white" strokeWidth="3" strokeLinecap="round"/>
+                      <circle cx="12" cy="12" r="10" stroke="white" strokeWidth="3" strokeOpacity="0.25" />
+                      <path d="M12 2a10 10 0 0110 10" stroke="white" strokeWidth="3" strokeLinecap="round" />
                     </svg>
-                    Ingresando...
-                  </span>
+                    Ingresando…
+                  </>
                 ) : (
-                  'Ingresar al portal'
+                  <>
+                    Ingresar al portal
+                    <ArrowRight size={15} strokeWidth={2.2} />
+                  </>
                 )}
               </button>
             </form>
 
-            {/* Footer note */}
-            <p className="text-center text-white/30 text-xs mt-6">
+            {/* Security note */}
+            <div
+              className="flex items-start gap-2.5 rounded-xl px-4 py-3 mt-5 border"
+              style={{ background: '#F0FDF4', borderColor: '#BBF7D0' }}
+            >
+              <Shield size={14} color="#16A34A" strokeWidth={2} className="mt-0.5 shrink-0" />
+              <p className="text-xs leading-snug" style={{ color: '#15803D' }}>
+                Tus datos están protegidos con encriptación bancaria SSL/TLS.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3 my-5">
+              <hr className="flex-1 border-[#F1F5F9]" />
+              <span className="text-[#CBD5E1] text-xs">o</span>
+              <hr className="flex-1 border-[#F1F5F9]" />
+            </div>
+
+            <p className="text-center text-[#94A3B8] text-sm">
               ¿Problemas para ingresar?{' '}
-              <a href="https://wa.me/595971000000" className="text-emerald-500 hover:text-emerald-400 transition-colors">
+              <a href="https://wa.me/595971000000" className="font-medium" style={{ color: '#2B9348' }}>
                 Contactá soporte
               </a>
             </p>
           </div>
-
-          {/* Below card */}
-          <p className="text-center text-white/20 text-xs mt-6">
-            © 2025 Cooperativa Vida &amp; Luz · Paraguay
-          </p>
         </div>
       </div>
     </div>

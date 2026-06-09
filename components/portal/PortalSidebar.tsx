@@ -1,147 +1,136 @@
 'use client';
 
-interface NavItem {
-  icon: React.ReactNode;
-  label: string;
-  href: string;
-  active?: boolean;
-  badge?: string;
-}
-
-function HomeIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-      <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <polyline points="9 22 9 12 15 12 15 22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  );
-}
-
-function CreditIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-      <rect x="2" y="5" width="20" height="14" rx="3" stroke="currentColor" strokeWidth="2"/>
-      <path d="M2 10h20" stroke="currentColor" strokeWidth="2"/>
-    </svg>
-  );
-}
-
-function SavingsIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" stroke="currentColor" strokeWidth="2"/>
-      <path d="M12 6v6l4 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-    </svg>
-  );
-}
-
-function DocumentIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <polyline points="14 2 14 8 20 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <line x1="8" y1="13" x2="16" y2="13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-      <line x1="8" y1="17" x2="12" y2="17" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-    </svg>
-  );
-}
-
-function HelpIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
-      <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M12 17h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-    </svg>
-  );
-}
+import { Home, FileText, ClipboardList, Star, User, LogOut } from 'lucide-react';
 
 interface SidebarProps {
   activeSection: string;
   onNavigate: (section: string) => void;
+  userName: string;
+  userRole: string;
 }
 
-export default function PortalSidebar({ activeSection, onNavigate }: SidebarProps) {
-  const navItems: NavItem[] = [
-    { icon: <HomeIcon />, label: 'Inicio', href: 'dashboard' },
-    { icon: <CreditIcon />, label: 'Créditos', href: 'creditos' },
-    { icon: <SavingsIcon />, label: 'Ahorros', href: 'ahorros' },
-    { icon: <DocumentIcon />, label: 'Documentos', href: 'documentos' },
-    { icon: <HelpIcon />, label: 'Soporte', href: 'soporte' },
-  ];
+const NAV_MAIN = [
+  { id: 'dashboard',   label: 'Inicio',       Icon: Home },
+  { id: 'documentos',  label: 'Documentos',   Icon: FileText },
+  { id: 'solicitudes', label: 'Solicitudes',  Icon: ClipboardList },
+];
+
+const NAV_ACCOUNT = [
+  { id: 'perfil',  label: 'Mi Perfil',       Icon: User },
+];
+
+const ROL_LABEL: Record<string, string> = {
+  admin:    'Administrador',
+  socio:    'Socio activo',
+  empleado: 'Empleado',
+};
+
+export default function PortalSidebar({ activeSection, onNavigate, userName, userRole }: SidebarProps) {
+  const initials = userName
+    .split(' ')
+    .map((w) => w[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase();
 
   return (
-    <aside
-      className="hidden lg:flex flex-col w-64 min-h-screen shrink-0"
-      style={{ background: '#0C1C17', borderRight: '1px solid rgba(0,127,95,0.15)' }}
-    >
-      {/* Brand */}
-      <div className="px-6 py-6 border-b" style={{ borderColor: 'rgba(0,127,95,0.15)' }}>
-        <div className="flex items-center gap-3">
-          <div
-            className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-            style={{ background: 'linear-gradient(135deg, #2b9348, #007f5f)' }}
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z" fill="white" fillOpacity="0.9"/>
-              <path d="M9 12l2 2 4-4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-          <div>
-            <p className="text-white font-bold text-sm leading-none">Vida &amp; Luz</p>
-            <p className="text-xs font-medium tracking-widest uppercase mt-0.5" style={{ color: '#80b918' }}>
-              Cooperativa
-            </p>
-          </div>
+    <aside className="hidden lg:flex flex-col w-56 shrink-0 min-h-screen bg-white border-r border-[#E2E8F0]">
+
+      {/* ── Brand ─────────────────────────────────────────── */}
+      <div className="flex items-center gap-2.5 px-5 pt-6 pb-5 border-b border-[#F1F5F9]">
+        <div
+          className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+          style={{ background: 'linear-gradient(135deg, #2b9348, #1a7a38)' }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z"
+              fill="white" fillOpacity="0.95" />
+            <path d="M9 12l2 2 4-4" stroke="white" strokeWidth="2.2"
+              strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
+        <div>
+          <p className="text-[#0F172A] font-bold text-[13px] leading-none">Vida &amp; Luz</p>
+          <p className="text-[#94A3B8] text-[10px] mt-1 uppercase tracking-[0.08em]">Cooperativa</p>
         </div>
       </div>
 
-      {/* Nav */}
-      <nav className="flex-1 px-3 py-4 space-y-1">
-        {navItems.map((item) => {
-          const isActive = activeSection === item.href;
-          return (
-            <button
-              key={item.href}
-              onClick={() => onNavigate(item.href)}
-              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all text-left"
-              style={{
-                color: isActive ? '#fff' : 'rgba(255,255,255,0.45)',
-                background: isActive ? 'rgba(43,147,72,0.20)' : 'transparent',
-                borderLeft: isActive ? '3px solid #2b9348' : '3px solid transparent',
-              }}
-            >
-              <span style={{ color: isActive ? '#2b9348' : 'rgba(255,255,255,0.35)' }}>
-                {item.icon}
-              </span>
-              {item.label}
-              {item.badge && (
-                <span className="ml-auto text-xs font-bold rounded-full px-2 py-0.5" style={{ background: '#2b9348', color: '#fff' }}>
-                  {item.badge}
-                </span>
-              )}
-            </button>
-          );
-        })}
+      {/* ── Navigation ────────────────────────────────────── */}
+      <nav className="flex-1 px-3 py-5 flex flex-col gap-6">
+
+        <div className="flex flex-col gap-0.5">
+          <p className="text-[10px] font-semibold text-[#94A3B8] uppercase tracking-[0.09em] px-2 mb-1.5">
+            Principal
+          </p>
+          {NAV_MAIN.map(({ id, label, Icon }) => {
+            const active = activeSection === id;
+            return (
+              <button
+                key={id}
+                onClick={() => onNavigate(id)}
+                className="flex items-center gap-2.5 w-full px-2.5 py-2.5 rounded-xl text-left transition-colors text-[13.5px]"
+                style={{
+                  background:  active ? '#F0FDF4' : 'transparent',
+                  color:       active ? '#15803D' : '#64748B',
+                  fontWeight:  active ? 600 : 500,
+                }}
+              >
+                <Icon size={16} strokeWidth={active ? 2.2 : 1.8}
+                  color={active ? '#16A34A' : '#94A3B8'} />
+                {label}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="flex flex-col gap-0.5">
+          <p className="text-[10px] font-semibold text-[#94A3B8] uppercase tracking-[0.09em] px-2 mb-1.5">
+            Cuenta
+          </p>
+          {NAV_ACCOUNT.map(({ id, label, Icon }) => {
+            const active = activeSection === id;
+            return (
+              <button
+                key={id}
+                onClick={() => onNavigate(id)}
+                className="flex items-center gap-2.5 w-full px-2.5 py-2.5 rounded-xl text-left transition-colors text-[13.5px]"
+                style={{
+                  background:  active ? '#F0FDF4' : 'transparent',
+                  color:       active ? '#15803D' : '#64748B',
+                  fontWeight:  active ? 600 : 500,
+                }}
+              >
+                <Icon size={16} strokeWidth={active ? 2.2 : 1.8}
+                  color={active ? '#16A34A' : '#94A3B8'} />
+                {label}
+              </button>
+            );
+          })}
+          <button
+            onClick={() => onNavigate('logout')}
+            className="flex items-center gap-2.5 w-full px-2.5 py-2.5 rounded-xl text-left transition-colors text-[13.5px] text-[#64748B] hover:text-red-600 hover:bg-red-50"
+            style={{ fontWeight: 500 }}
+          >
+            <LogOut size={16} strokeWidth={1.8} />
+            Cerrar sesión
+          </button>
+        </div>
       </nav>
 
-      {/* Bottom promo */}
-      <div className="px-3 pb-6">
+      {/* ── User footer ───────────────────────────────────── */}
+      <div className="flex items-center gap-2.5 px-4 py-4 border-t border-[#F1F5F9]">
         <div
-          className="rounded-2xl p-4"
-          style={{ background: 'linear-gradient(135deg, rgba(43,147,72,0.22), rgba(0,127,95,0.12))', border: '1px solid rgba(43,147,72,0.2)' }}
+          className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-white text-[11px] font-bold"
+          style={{ background: 'linear-gradient(135deg, #2b9348, #1a7a38)' }}
         >
-          <p className="text-white font-semibold text-xs mb-1">¿Necesitás un crédito?</p>
-          <p className="text-white/40 text-xs leading-snug mb-3">Tasas preferenciales para socios activos.</p>
-          <a
-            href="/credito/solicitud"
-            className="block text-center text-xs font-semibold py-2 rounded-xl transition-all"
-            style={{ background: 'linear-gradient(135deg, #2b9348, #007f5f)', color: '#fff' }}
-          >
-            Solicitar ahora
-          </a>
+          {initials}
+        </div>
+        <div className="min-w-0">
+          <p className="text-[#0F172A] text-[12px] font-semibold truncate leading-none">{userName}</p>
+          <p className="text-[#94A3B8] text-[11px] mt-1">{ROL_LABEL[userRole] ?? userRole}</p>
         </div>
       </div>
+
     </aside>
   );
 }
