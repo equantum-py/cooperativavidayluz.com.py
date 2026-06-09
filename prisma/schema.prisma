@@ -8,13 +8,13 @@ datasource db {
 }
 
 model User {
-  id        Int     @id @default(autoincrement())
-  ci        String  @unique @db.VarChar(20)
-  nombre    String  @db.VarChar(255)
-  email     String? @unique @db.VarChar(255)
-  password  String  @db.VarChar(255)
-  rol       String  @default("socio") @db.VarChar(50)
-  estado    String  @default("activo") @db.VarChar(50)
+  id        Int      @id @default(autoincrement())
+  ci        String   @unique @db.VarChar(20)
+  nombre    String   @db.VarChar(255)
+  email     String?  @unique @db.VarChar(255)
+  password  String   @db.VarChar(255)
+  rol       String   @default("socio") @db.VarChar(50)
+  estado    String   @default("activo") @db.VarChar(50)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
