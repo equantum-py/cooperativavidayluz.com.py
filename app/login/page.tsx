@@ -49,7 +49,15 @@ export default function LoginPage() {
     <div className="min-h-screen flex bg-[#F8FAFC]">
 
       {/* ─────────────────── LEFT — institutional panel ──────────────────── */}
-      <div className="hidden lg:flex lg:w-[52%] flex-col justify-between bg-white border-r border-[#E2E8F0] px-14 py-12 relative overflow-hidden">
+      <div
+        className="hidden lg:flex lg:w-[52%] flex-col justify-between border-r border-[#E2E8F0] px-14 py-12 relative overflow-hidden"
+        style={{
+          backgroundImage: "linear-gradient(rgba(255,255,255,0.78), rgba(255,255,255,0.82)), url('/images/login-bg.jpg')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
 
         {/* Very subtle radial tint — no glow, just ambient warmth */}
         <div className="pointer-events-none absolute -top-40 -right-40 w-[440px] h-[440px] rounded-full"
