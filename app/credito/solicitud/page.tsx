@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Navbar from '@/components/landing/Navbar';
+import Footer from '@/components/landing/Footer';
 import SolicitudForm from '@/components/credito/SolicitudForm';
 
 export const metadata: Metadata = {
@@ -35,6 +36,8 @@ export default function SolicitudPage() {
           <SolicitudForm />
         </div>
       </main>
+
+      <Footer />
     </>
   );
 }

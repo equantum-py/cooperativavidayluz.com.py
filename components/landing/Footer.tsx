@@ -18,6 +18,13 @@ const LINKS = {
     { label: 'Responsabilidad social', href: '#' },
     { label: 'Trabaja con nosotros', href: '#' },
   ],
+  Documentos: [
+    { label: 'Estatutos', href: '/documentos' },
+    { label: 'Reglamentos', href: '/documentos' },
+    { label: 'Balances y EEFF', href: '/documentos' },
+    { label: 'Memorias anuales', href: '/documentos' },
+    { label: 'Ver todos', href: '/documentos' },
+  ],
   Soporte: [
     { label: 'Centro de ayuda', href: '#' },
     { label: 'Preguntas frecuentes', href: '#' },
@@ -38,7 +45,7 @@ export default function Footer() {
     <footer className="bg-void-2 border-t border-white/[0.06]">
       <div className="max-w-7xl mx-auto px-6 py-16">
         {/* Top grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-white/[0.07]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10 pb-12 border-b border-white/[0.07]">
           {/* Brand column */}
           <div className="lg:col-span-2">
             {/* Logo */}

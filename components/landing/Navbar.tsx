@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { href: '#como-funciona', label: 'Cómo funciona' },
   { href: '/login', label: 'Portal' },
   { href: '#nosotros', label: 'Nosotros' },
+  { href: '/documentos', label: 'Documentos' },
 ];
 
 export default function Navbar() {

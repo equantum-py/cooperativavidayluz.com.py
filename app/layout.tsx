@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import type { Metadata, Viewport } from 'next';
 import { Inter, Poppins } from 'next/font/google';
 import './globals.css';
+import WhatsAppButton from '@/components/landing/WhatsAppButton';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
 const poppins = Poppins({
@@ -39,6 +40,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
     <html lang="es-PY" className="scroll-smooth">
       <body className={`${inter.variable} ${poppins.variable} bg-light font-sans text-dark antialiased`}>
         {children}
+        <WhatsAppButton />
       </body>
     </html>
   );
