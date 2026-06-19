@@ -81,6 +81,9 @@ export function updateCreditoEstado(
   if (idx === -1) return null;
   records[idx].estado = estado;
   write(records);
+  return records[idx];
+}
+
 export type AsociacionRequest = {
   id: string;
   createdAt: string;
