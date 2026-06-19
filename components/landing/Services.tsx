@@ -17,31 +17,31 @@ const SERVICES = [
   {
     id: 'creditos',
     icon: CreditCard,
-    title: 'Créditos Personales y Mipymes',
-    description: 'Aprobación en 24h. Tasas desde 12% anual. Financiación flexible para consolidar deudas o impulsar tu negocio.',
+    title: 'Créditos Personales',
+    description: 'Aprobación rápida. Tasas altamente competitivas. Financiación flexible para consolidar deudas o impulsar tu negocio.',
   },
   {
     id: 'ahorro',
     icon: PiggyBank,
-    title: 'Cajas de Ahorro Premium',
+    title: 'Cajas de Ahorro',
     description: 'Rendimientos de hasta 8.4% anual. Sin costos de mantenimiento. Tu dinero crece mientras está disponible 24/7.',
   },
   {
     id: 'portal',
     icon: Smartphone,
     title: 'Portal Digital 24/7',
-    description: 'Nuestra App en tu navegador. Transfiere, paga cuotas y revisa tus extractos sin pisar una sucursal.',
+    description: 'Nuestra plataforma en tu navegador. Transfiere, paga cuotas y revisa tus extractos sin pisar una sucursal.',
   },
   {
     id: 'beneficios',
     icon: Gift,
-    title: 'Club de Beneficios',
-    description: 'Descuentos exclusivos de hasta 30% en supermercados, farmacias y comercios adheridos de todo el país.',
+    title: 'Beneficios Exclusivos',
+    description: 'Descuentos de hasta 30% en supermercados, farmacias y comercios adheridos de todo el país.',
   },
   {
     id: 'solidaridad',
     icon: HeartHandshake,
-    title: 'Subsidios y Solidaridad',
+    title: 'Subsidios Solidarios',
     description: 'Cobertura por nacimiento, casamiento y asistencia médica. Cuidamos a nuestra comunidad cuando más lo necesita.',
   },
   {
@@ -68,28 +68,27 @@ function ServiceCard({
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay: index * 0.07, duration: 0.45 }}
-      whileHover={{ y: -4, transition: { type: 'spring', stiffness: 340, damping: 26 } }}
-      className="flex flex-col gap-4 bg-white border border-gray-100 rounded-2xl p-7 shadow-elevation-1 hover:shadow-card-hover transition-all duration-300"
+      transition={{ delay: index * 0.05, duration: 0.5 }}
+      className="flex flex-col bg-white border border-[#E9E9E9] p-8 hover:border-[#006059] transition-colors duration-300"
     >
       {/* Icono */}
-      <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center flex-shrink-0">
-        <Icon size={22} className="text-emerald-700" strokeWidth={1.75} />
+      <div className="mb-6">
+        <Icon size={32} className="text-[#006059]" strokeWidth={1.5} />
       </div>
 
       {/* Texto */}
       <div className="flex-1">
-        <h3 className="font-bold text-[17px] text-gray-900 mb-2 leading-snug">
+        <h3 className="font-bold text-[20px] text-[#004C47] mb-3 leading-tight">
           {service.title}
         </h3>
-        <p className="text-[14.5px] text-gray-500 leading-relaxed">
+        <p className="text-[15px] text-[#121212] opacity-80 leading-relaxed">
           {service.description}
         </p>
       </div>
       
       {/* Action link */}
-      <div className="pt-2">
-        <span className="text-[13px] font-semibold text-emerald-600 hover:text-emerald-700 cursor-pointer flex items-center gap-1 group">
+      <div className="pt-6 mt-auto border-t border-transparent">
+        <span className="text-[14px] font-bold text-[#006059] hover:text-[#004c47] cursor-pointer inline-flex items-center gap-1 group">
           Saber más <span className="transition-transform group-hover:translate-x-1">→</span>
         </span>
       </div>
@@ -101,7 +100,7 @@ function ServiceCard({
 
 export default function Services() {
   return (
-    <section id="servicios" className="py-24 px-6 bg-gray-50">
+    <section id="servicios" className="py-24 px-6 bg-[#F9F9F9]">
       <div className="max-w-7xl mx-auto">
 
         {/* Encabezado */}
@@ -110,16 +109,13 @@ export default function Services() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-16"
+          className="mb-16"
         >
-          <p className="text-[12px] font-bold text-emerald-600 uppercase tracking-[0.2em] mb-3">
-            Portafolio Financiero
-          </p>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight leading-tight mb-5">
-            Soluciones para tu día a día
+          <h2 className="text-[32px] md:text-[40px] font-bold text-[#004C47] tracking-tight leading-tight mb-4">
+            Soluciones financieras para tu día a día
           </h2>
-          <p className="mt-4 text-[17px] text-gray-500 max-w-2xl mx-auto leading-relaxed">
-            Productos diseñados sin letra chica. Obtén liquidez, haz crecer tus ahorros y gestiona tu dinero 100% online.
+          <p className="text-[18px] text-[#121212] opacity-90 max-w-3xl leading-relaxed">
+            Productos diseñados para tu bienestar. Obtén liquidez, haz crecer tus ahorros y gestiona tu dinero 100% online con total seguridad.
           </p>
         </motion.div>
 
@@ -135,7 +131,7 @@ export default function Services() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-14 flex justify-center"
+          className="mt-16 text-center"
         >
            <Button href="/credito/solicitud" size="lg">
              Simular Crédito Ahora

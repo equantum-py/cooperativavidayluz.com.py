@@ -4,22 +4,22 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ShieldCheck } from 'lucide-react';
+import { Menu, X, Lock } from 'lucide-react';
 import { LOGO } from '@/lib/images';
 import { Button } from '@/components/ui/Button';
 
 const NAV_LINKS = [
-  { href: '#servicios', label: 'Servicios' },
-  { href: '#como-funciona', label: 'Cómo funciona' },
-  { href: '#nosotros', label: 'Nosotros' },
-  { href: '/documentos', label: 'Documentos' },
+  { href: '#servicios', label: 'Personas' },
+  { href: '#servicios-empresas', label: 'Empresas' },
+  { href: '#nosotros', label: 'Nuestra Institución' },
+  { href: '/documentos', label: 'Transparencia' },
 ];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 inset-x-0 z-50 bg-white border-b border-gray-100 shadow-sm">
+    <header className="fixed top-0 inset-x-0 z-50 bg-white border-b border-[#E9E9E9] shadow-sm">
       <nav className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
 
         {/* Logo */}
@@ -30,17 +30,17 @@ export default function Navbar() {
             width={200}
             height={60}
             priority
-            className="h-14 w-auto object-contain"
+            className="h-10 w-auto object-contain"
           />
         </Link>
 
         {/* Desktop nav links */}
-        <div className="hidden md:flex items-center gap-0.5 ml-8 mr-auto">
+        <div className="hidden md:flex items-center gap-1 ml-8 mr-auto">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="px-4 py-2 rounded-xl text-[14px] font-medium text-gray-600 hover:text-emerald-700 hover:bg-emerald-50/50 transition-all duration-200"
+              className="px-4 py-2 text-[15px] font-medium text-[#121212] hover:text-[#006059] transition-colors duration-200 border-b-2 border-transparent hover:border-[#006059]"
             >
               {link.label}
             </Link>
@@ -49,14 +49,11 @@ export default function Navbar() {
 
         {/* Desktop CTAs */}
         <div className="hidden md:flex items-center gap-4">
-          <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full text-xs font-semibold mr-2 border border-emerald-100">
-            <ShieldCheck size={14} className="text-emerald-600" />
-            <span>Portal Seguro</span>
-          </div>
           <Link
             href="/login"
-            className="text-[14px] font-semibold text-emerald-700 hover:text-emerald-800 transition-colors duration-200"
+            className="flex items-center gap-2 text-[15px] font-semibold text-[#006059] hover:text-[#004c47] transition-colors duration-200 px-2"
           >
+            <Lock size={16} />
             Acceso Socios
           </Link>
           <Button href="#registro" size="sm" variant="default">
@@ -66,7 +63,7 @@ export default function Navbar() {
 
         {/* Mobile toggle */}
         <button
-          className="md:hidden p-2.5 rounded-xl text-gray-700 hover:bg-gray-100 transition-all"
+          className="md:hidden p-2 text-[#121212] hover:bg-[#F4F4F4] transition-colors rounded"
           onClick={() => setOpen((v) => !v)}
           aria-label="Abrir menú"
         >
@@ -80,7 +77,7 @@ export default function Navbar() {
                 transition={{ duration: 0.15 }}
                 className="block"
               >
-                <X size={20} />
+                <X size={24} />
               </motion.span>
             ) : (
               <motion.span
@@ -91,7 +88,7 @@ export default function Navbar() {
                 transition={{ duration: 0.15 }}
                 className="block"
               >
-                <Menu size={20} />
+                <Menu size={24} />
               </motion.span>
             )}
           </AnimatePresence>
@@ -106,15 +103,15 @@ export default function Navbar() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="md:hidden overflow-hidden bg-white border-b border-gray-100"
+            className="md:hidden overflow-hidden bg-white border-b border-[#E9E9E9]"
           >
-            <div className="px-5 py-4 flex flex-col gap-1">
+            <div className="px-5 py-6 flex flex-col gap-2">
               {NAV_LINKS.map((link, i) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className="py-2.5 px-3 rounded-xl text-[15px] font-medium text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 transition-all block"
+                  className="py-3 px-2 text-[16px] font-medium text-[#121212] hover:text-[#006059] transition-colors block border-b border-[#F4F4F4] last:border-0"
                 >
                   <motion.div
                     initial={{ opacity: 0, x: -12 }}
@@ -125,8 +122,9 @@ export default function Navbar() {
                   </motion.div>
                 </Link>
               ))}
-              <div className="mt-4 pt-4 border-t border-gray-100 flex flex-col gap-3">
+              <div className="mt-6 pt-6 border-t border-[#E9E9E9] flex flex-col gap-4">
                 <Button href="/login" variant="outline" className="w-full">
+                  <Lock size={16} className="mr-2" />
                   Acceso Socios
                 </Button>
                 <Button href="#registro" className="w-full">
