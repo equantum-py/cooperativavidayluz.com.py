@@ -3,21 +3,297 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  ci        String   @unique @db.VarChar(20)
-  nombre    String   @db.VarChar(255)
-  email     String?  @unique @db.VarChar(255)
-  password  String   @db.VarChar(255)
-  rol       String   @default("socio") @db.VarChar(50)
-  estado    String   @default("activo") @db.VarChar(50)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+// ------------------------------------------------------
+// CONFIGURACIÓN DEL SISTEMA
+// ------------------------------------------------------
 
-  @@index([ci])
+model ConfiguracionSistema {
+  id          String   @id @default(uuid())
+  clave       String   @unique // Ej: DEFAULT_INTEREST_RATE, SCORE_MINIMO_PREAPROBADO
+  valor       String   // Se parseará como int/float/bool según corresponda
+  descripcion String?
+  actualizado DateTime @updatedAt
+  
+  @@index([clave])
+}
+
+// ------------------------------------------------------
+// GESTIÓN DE ACCESO
+// ------------------------------------------------------
+
+model Rol {
+  id          String    @id @default(uuid())
+  nombre      String    @unique // SuperAdmin, Gerencia, etc.
+  permisos    String[]  // JSON/Array de permisos
+  usuarios    Usuario[]
+  
+  @@index([nombre])
+}
+
+model Usuario {
+  id          String    @id @default(uuid())
+  email       String    @unique
+  password    String
+  nombre      String
+  rolId       String
+  rol         Rol       @relation(fields: [rolId], references: [id])
+  
+  acciones    BitacoraAuditoria[]
+  cajas       MovimientoCaja[]
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
   @@index([email])
+}
+
+// ------------------------------------------------------
+// CORE COOPERATIVO
+// ------------------------------------------------------
+
+model Socio {
+  id                  String    @id @default(uuid())
+  numeroSocio         String    @unique
+  
+  // Personales
+  nombre              String
+  apellido            String
+  cedula              String    @unique
+  fechaNacimiento     DateTime
+  telefono            String
+  email               String?
+  direccion           String
+  ciudad              String
+  estadoCivil         String?
+  profesion           String?
+  empleador           String?
+  
+  // Cooperativos
+  estado              String    // Pendiente, Activo, Suspendido, Inactivo, Renunció, Fallecido
+  fechaIngreso        DateTime  @default(now())
+  categoriaSocio      String    @default("Regular")
+  aporteMensual       Decimal   @db.Decimal(12, 2)
+  saldoAportes        Decimal   @db.Decimal(12, 2) @default(0)
+  
+  // Relaciones
+  scoreCrediticio     ScoreCrediticio?
+  beneficiarios       Beneficiario[]
+  aportes             Aporte[]
+  creditos            Credito[]
+  documentos          Documento[]
+  notificaciones      Notificacion[]
+  codeudores          Codeudor[]
+  
+  creadoPorId         String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  @@index([numeroSocio])
+  @@index([cedula])
+  @@index([nombre, apellido])
+}
+
+model Beneficiario {
+  id              String   @id @default(uuid())
+  socioId         String
+  socio           Socio    @relation(fields: [socioId], references: [id])
+  
+  nombreCompleto  String
+  parentesco      String
+  cedula          String?
+  telefono        String?
+  porcentaje      Decimal  @db.Decimal(5, 2) @default(100.00) // % de beneficio en caso de fallecimiento
+  
+  createdAt       DateTime @default(now())
+  
+  @@index([socioId])
+}
+
+model ScoreCrediticio {
+  id              String   @id @default(uuid())
+  socioId         String   @unique
+  socio           Socio    @relation(fields: [socioId], references: [id])
+  
+  puntaje         Int      @default(50) // 0 a 100
+  nivelRiesgo     String   // Bajo, Medio, Alto
+  historialMora   Int      @default(0) // Dias maximos de mora registrados
+  limiteSugerido  Decimal  @db.Decimal(15, 2)
+  
+  ultimaEval      DateTime @default(now())
+}
+
+// ------------------------------------------------------
+// FINANZAS Y CAJA
+// ------------------------------------------------------
+
+model Aporte {
+  id              String    @id @default(uuid())
+  socioId         String
+  socio           Socio     @relation(fields: [socioId], references: [id])
+  
+  monto           Decimal   @db.Decimal(12, 2)
+  periodoMes      Int
+  periodoAnio     Int
+  estado          String    // Pagado, Anulado
+  
+  movimientos     MovimientoCaja[]
+  
+  createdAt       DateTime  @default(now())
+  
+  @@index([socioId, periodoAnio, periodoMes])
+}
+
+model Credito {
+  id                String    @id @default(uuid())
+  socioId           String
+  socio             Socio     @relation(fields: [socioId], references: [id])
+  
+  montoOriginal     Decimal   @db.Decimal(15, 2)
+  saldoPendiente    Decimal   @db.Decimal(15, 2)
+  tasaInteresAnual  Decimal   @db.Decimal(5, 2)
+  plazoMeses        Int
+  destino           String
+  estado            String    // Pendiente, Aprobado, Activo, Cancelado, Mora
+  fechaDesembolso   DateTime?
+  
+  cuotas            Cuota[]
+  garantias         Garantia[]
+  codeudores        Codeudor[]
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@index([socioId])
+  @@index([estado])
+}
+
+model Cuota {
+  id                String    @id @default(uuid())
+  creditoId         String
+  credito           Credito   @relation(fields: [creditoId], references: [id])
+  
+  numeroCuota       Int
+  montoCapital      Decimal   @db.Decimal(12, 2)
+  montoInteres      Decimal   @db.Decimal(12, 2)
+  montoTotal        Decimal   @db.Decimal(12, 2)
+  
+  fechaVencimiento  DateTime
+  fechaPago         DateTime?
+  estado            String    // Pendiente, Pagada, Atrasada
+  
+  movimientos       MovimientoCaja[]
+
+  createdAt         DateTime  @default(now())
+  
+  @@index([creditoId])
+  @@index([fechaVencimiento])
+}
+
+model Garantia {
+  id                String    @id @default(uuid())
+  creditoId         String
+  credito           Credito   @relation(fields: [creditoId], references: [id])
+  
+  tipo              String    // Hipotecaria, Prendaria, Pagaré, Vehículo
+  valorTasado       Decimal   @db.Decimal(15, 2)
+  descripcion       String
+  estado            String    // Activa, Liberada
+  documentoRefId    String?   // Vínculo con Documento
+  
+  createdAt         DateTime  @default(now())
+}
+
+model Codeudor {
+  id                String    @id @default(uuid())
+  creditoId         String
+  credito           Credito   @relation(fields: [creditoId], references: [id])
+  
+  // Un Codeudor puede ser un Socio de la cooperativa...
+  socioId           String?
+  socio             Socio?    @relation(fields: [socioId], references: [id])
+  
+  // ...o un externo (datos manuales si no es socio)
+  nombreExterno     String?
+  cedulaExterno     String?
+  telefonoExterno   String?
+  
+  montoGarantizado  Decimal   @db.Decimal(15, 2)
+  
+  createdAt         DateTime  @default(now())
+}
+
+model MovimientoCaja {
+  id              String    @id @default(uuid())
+  usuarioId       String    // Cajero/Tesorero
+  usuario         Usuario   @relation(fields: [usuarioId], references: [id])
+  
+  tipo            String    // Ingreso, Egreso
+  concepto        String    // Pago de Cuota, Desembolso Crédito, Aporte Mensual
+  monto           Decimal   @db.Decimal(15, 2)
+  metodoPago      String    // Efectivo, Transferencia, Cheque
+  referencia      String?   // Comprobante
+  
+  // Vínculos opcionales
+  cuotaId         String?
+  cuota           Cuota?    @relation(fields: [cuotaId], references: [id])
+  aporteId        String?
+  aporte          Aporte?   @relation(fields: [aporteId], references: [id])
+  
+  fechaTransaccion DateTime @default(now())
+  
+  @@index([fechaTransaccion])
+  @@index([usuarioId])
+}
+
+// ------------------------------------------------------
+// OPERATIVA Y SEGURIDAD
+// ------------------------------------------------------
+
+model Documento {
+  id          String   @id @default(uuid())
+  socioId     String
+  socio       Socio    @relation(fields: [socioId], references: [id])
+  
+  tipo        String   // Cedula, ComprobanteIngreso, Pagaré, Tasación
+  url         String   // Enlace al almacenamiento
+  verificado  Boolean  @default(false)
+  
+  createdAt   DateTime @default(now())
+}
+
+model Notificacion {
+  id          String   @id @default(uuid())
+  socioId     String
+  socio       Socio    @relation(fields: [socioId], references: [id])
+  
+  titulo      String
+  mensaje     String
+  leido       Boolean  @default(false)
+  tipo        String   // Alerta, Informativa, Cobranza
+  
+  createdAt   DateTime @default(now())
+  
+  @@index([socioId, leido])
+}
+
+model BitacoraAuditoria {
+  id          String   @id @default(uuid())
+  usuarioId   String
+  usuario     Usuario  @relation(fields: [usuarioId], references: [id])
+  
+  accion      String   // CREATE, UPDATE, DELETE, APPROVE
+  entidad     String   // Ej: MovimientoCaja, Credito
+  entidadId   String   // ID de la tupla afectada
+  detalles    Json     // Cambios (old_state -> new_state)
+  ip          String?
+  
+  fecha       DateTime @default(now())
+  
+  @@index([entidad, entidadId])
+  @@index([fecha])
 }
