@@ -229,13 +229,13 @@ export default function Portal() {
               className="mt-10 flex items-center gap-4"
             >
               <a
-                href="#contacto"
+                href="/login"
                 className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-xl text-[14px] font-semibold transition-all hover:shadow-glow-sm hover:-translate-y-0.5"
               >
                 Acceder al portal
               </a>
               <a
-                href="#contacto"
+                href="/login"
                 className="text-[14px] font-medium text-white/55 hover:text-white transition-colors"
               >
                 Descargar app →

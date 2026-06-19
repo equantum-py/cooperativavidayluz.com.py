@@ -50,11 +50,11 @@ export default function CTA() {
           transition={{ delay: 0.2, duration: 0.5 }}
           className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <Button href="#registro" size="lg" className="w-full sm:w-auto bg-[#006059] hover:bg-[#004c47] border-transparent">
+          <Button href="/login" size="lg" className="w-full sm:w-auto bg-[#006059] hover:bg-[#004c47] border-transparent">
             Hazte socio ahora
             <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
           </Button>
-          <Button href="#contacto-asesor" size="lg" className="w-full sm:w-auto bg-transparent border border-white text-white hover:bg-white/10">
+          <Button href="https://wa.me/595982765972" size="lg" className="w-full sm:w-auto bg-transparent border border-white text-white hover:bg-white/10">
             <MessageCircle size={16} />
             Hablar con un asesor
           </Button>

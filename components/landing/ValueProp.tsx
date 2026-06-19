@@ -24,7 +24,7 @@ const CARDS = [
 
 export default function ValueProp() {
   return (
-    <section className="bg-white py-24 md:py-32 px-6 border-b border-[#E9E9E9]">
+    <section id="nosotros" className="bg-white py-24 md:py-32 px-6 border-b border-[#E9E9E9]">
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 xl:gap-24 items-start">
 
@@ -64,7 +64,7 @@ export default function ValueProp() {
               transition={{ delay: 0.2, duration: 0.5 }}
               className="mt-10 flex flex-col sm:flex-row items-center gap-4"
             >
-              <Button href="#registro" size="default" className="w-full sm:w-auto">
+              <Button href="/login" size="default" className="w-full sm:w-auto">
                 Hazte socio
               </Button>
               <Button href="#servicios" variant="outline" className="w-full sm:w-auto">

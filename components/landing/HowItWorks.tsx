@@ -115,7 +115,7 @@ export default function HowItWorks() {
           className="mt-14 text-center"
         >
           <a
-            href="#contacto"
+            href="/login"
             className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-7 py-3.5 rounded-2xl text-[15px] font-semibold transition-all shadow-sm hover:shadow-glow-sm hover:-translate-y-0.5 group"
           >
             Comenzar ahora — gratis

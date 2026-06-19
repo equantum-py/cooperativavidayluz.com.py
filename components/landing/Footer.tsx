@@ -3,8 +3,6 @@
 import { motion } from 'framer-motion';
 import { ShieldCheck, MapPin, Phone, Mail, Facebook, Instagram, Twitter } from 'lucide-react';
 import Link from 'next/link';
-import Image from 'next/image';
-import { LOGO } from '@/lib/images';
 
 const LINKS = {
   Servicios: [

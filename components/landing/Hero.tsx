@@ -31,7 +31,7 @@ export default function Hero() {
                   Simular crédito
                   <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
                 </Button>
-                <Button href="#registro" variant="outline" size="lg" className="w-full sm:w-auto bg-white">
+                <Button href="/login" variant="outline" size="lg" className="w-full sm:w-auto bg-white">
                   Hazte socio
                 </Button>
               </div>
