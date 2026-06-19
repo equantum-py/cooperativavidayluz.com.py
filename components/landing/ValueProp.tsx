@@ -2,22 +2,23 @@
 
 import { motion } from 'framer-motion';
 import { CreditCard, PiggyBank, HeartHandshake } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
 
 const CARDS = [
   {
     icon: CreditCard,
-    title: 'Créditos y financiamiento',
-    text: 'Soluciones para proyectos personales, familiares y profesionales con tasas accesibles y aprobación ágil.',
+    title: 'Créditos a tu medida',
+    text: 'Financiación ágil con aprobación rápida. Tasas altamente competitivas para potenciar tus proyectos personales y comerciales.',
   },
   {
     icon: PiggyBank,
-    title: 'Ahorro y crecimiento',
-    text: 'Herramientas financieras para construir tu futuro con seguridad y rendimientos competitivos.',
+    title: 'Ahorro inteligente',
+    text: 'Haz crecer tu capital de forma segura. Cajas de ahorro y depósitos a plazo fijo con excelentes rendimientos anuales.',
   },
   {
     icon: HeartHandshake,
-    title: 'Solidaridad y comunidad',
-    text: 'Actividades sociales, educativas y culturales que fomentan el bienestar de los socios y la comunidad.',
+    title: 'Solidaridad Cooperativa',
+    text: 'Servicios de protección y asistencia para ti y tu familia, respaldando tu tranquilidad en cada etapa de la vida.',
   },
 ] as const;
 
@@ -38,7 +39,7 @@ export default function ValueProp() {
               className="inline-flex items-center gap-2 text-[12px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 px-3.5 py-1.5 rounded-full uppercase tracking-[0.16em] mb-5"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-              Beneficios para socios
+              Institución Sólida
             </motion.span>
 
             {/* Título */}
@@ -47,9 +48,9 @@ export default function ValueProp() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.08, duration: 0.55 }}
-              className="heading-lg text-gray-900 text-balance mb-6"
+              className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight leading-tight mb-6"
             >
-              Por qué te conviene ser socio de Cooperativa Vida &amp; Luz
+              El respaldo financiero que necesitas, evolucionado.
             </motion.h2>
 
             {/* Texto institucional */}
@@ -58,36 +59,33 @@ export default function ValueProp() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.16, duration: 0.55 }}
-              className="space-y-4 text-[16.5px] text-gray-500 leading-relaxed"
+              className="space-y-4 text-[16px] text-gray-600 leading-relaxed"
             >
               <p>
-                Podés acceder a innumerables beneficios. Como cooperativa, nuestro objetivo
-                principal es acompañar a nuestros socios en cada etapa de su vida.
+                Olvídate de la burocracia tradicional. En Vida &amp; Luz combinamos 
+                la solidez de más de 20 años de trayectoria con la agilidad de la banca digital.
               </p>
               <p>
-                Diseñamos productos financieros como créditos, ahorros y tarjetas de crédito,
-                que te ayudarán a cumplir objetivos personales y profesionales.
-              </p>
-              <p>
-                Basados en nuestros principios y valores cooperativos, también brindamos
-                servicios de solidaridad y desarrollamos actividades sociales, culturales y
-                educativas que fomentan el bienestar socioeconómico de los socios y la
-                comunidad.
+                Como socio, accedes a un ecosistema de productos financieros diseñados
+                para impulsar tu economía, con total transparencia y el apoyo de una comunidad real.
               </p>
             </motion.div>
 
-            {/* CTA secundario */}
-            <motion.a
+            {/* CTAs */}
+            <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.28, duration: 0.5 }}
-              href="#servicios"
-              className="mt-8 inline-flex items-center gap-2 text-emerald-700 hover:text-emerald-600 font-semibold text-[15px] group"
+              className="mt-8 flex items-center gap-4"
             >
-              Ver todos los servicios
-              <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
-            </motion.a>
+              <Button href="#registro" size="default">
+                Asóciate ahora
+              </Button>
+              <Button href="#servicios" variant="ghost">
+                Explorar productos
+              </Button>
+            </motion.div>
           </div>
 
           {/* ── Columna derecha: tarjetas ── */}
@@ -100,20 +98,20 @@ export default function ValueProp() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.5 }}
                 whileHover={{ y: -3, transition: { type: 'spring', stiffness: 300, damping: 22 } }}
-                className="group flex items-start gap-5 bg-white border border-gray-100 rounded-2xl p-6 shadow-card hover:shadow-card-hover transition-shadow duration-300"
+                className="group flex items-start gap-5 bg-white border border-gray-100 rounded-2xl p-6 shadow-card hover:shadow-card-hover transition-all duration-300 hover:border-emerald-100"
               >
                 {/* Icono */}
-                <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center flex-shrink-0 group-hover:bg-emerald-600 group-hover:border-emerald-600 transition-colors duration-300">
+                <div className="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center flex-shrink-0 group-hover:bg-emerald-600 group-hover:border-emerald-600 transition-colors duration-300">
                   <Icon
-                    size={22}
+                    size={24}
                     strokeWidth={1.75}
                     className="text-emerald-600 group-hover:text-white transition-colors duration-300"
                   />
                 </div>
 
                 {/* Texto */}
-                <div className="min-w-0">
-                  <h3 className="font-bold text-[16px] text-gray-900 mb-1.5 leading-tight">
+                <div className="min-w-0 flex-1">
+                  <h3 className="font-bold text-[17px] text-gray-900 mb-1.5 leading-tight">
                     {title}
                   </h3>
                   <p className="text-[14px] text-gray-500 leading-relaxed">{text}</p>

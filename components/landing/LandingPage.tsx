@@ -4,13 +4,9 @@ import Navbar from './Navbar';
 import Hero from './Hero';
 import ValueProp from './ValueProp';
 import Services from './Services';
-import Stats from './Stats';
 import HowItWorks from './HowItWorks';
-import Benefits from './Benefits';
 import Portal from './Portal';
 import Testimonials from './Testimonials';
-import Timeline from './Timeline';
-import News from './News';
 import CTA from './CTA';
 import Footer from './Footer';
 
@@ -22,23 +18,25 @@ export default function LandingPage() {
       {/* 1. HERO */}
       <Hero />
 
-      {/* 2. VALUE PROP */}
+      {/* 2. BENEFICIOS PRINCIPALES */}
       <ValueProp />
 
-      {/* 3. SERVICES */}
+      {/* 3. PRODUCTOS FINANCIEROS */}
       <Services />
 
-      {/* 4. STATS */}
-      <Stats />
-
-      {/* RESTO */}
+      {/* 4. CÓMO ASOCIARSE */}
       <HowItWorks />
-      <Benefits />
+
+      {/* 5. PORTAL DIGITAL */}
       <Portal />
+
+      {/* 6. TESTIMONIOS */}
       <Testimonials />
-      <Timeline />
-      <News />
+
+      {/* 8. CTA FINAL */}
       <CTA />
+
+      {/* 9. FOOTER */}
       <Footer />
     </main>
   );

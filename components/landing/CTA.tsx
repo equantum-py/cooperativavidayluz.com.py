@@ -2,12 +2,13 @@
 
 import { motion } from 'framer-motion';
 import { ArrowRight, MessageCircle, CheckCircle2 } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
 
 const GUARANTEES = [
-  'Sin costo de apertura',
-  'Sin letra chica',
-  'Asesoría gratuita',
-  'Cancelás cuando quieras',
+  'Apertura 100% digital',
+  'Sin letras chicas',
+  'Soporte 24/7',
+  'Cancela cuando quieras',
 ] as const;
 
 export default function CTA() {
@@ -36,7 +37,7 @@ export default function CTA() {
           className="inline-flex items-center gap-2 glass-dark px-4 py-2 rounded-full text-[13px] font-medium text-emerald-400 mb-8"
         >
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          Más de 15.000 socios ya confían en nosotros
+          Más de 50.000 socios ya confían en nosotros
         </motion.div>
 
         {/* Headline */}
@@ -47,9 +48,9 @@ export default function CTA() {
           transition={{ delay: 0.1, duration: 0.7, type: 'spring', stiffness: 75 }}
           className="heading-xl text-white text-balance"
         >
-          ¿Listo para unirte a la
+          La banca cooperativa del futuro,
           <br />
-          <span className="gradient-text-bright">cooperativa del futuro?</span>
+          <span className="gradient-text-bright">en tu bolsillo.</span>
         </motion.h2>
 
         {/* Sub */}
@@ -60,8 +61,8 @@ export default function CTA() {
           transition={{ delay: 0.25, duration: 0.6 }}
           className="mt-6 text-[18px] text-white/52 max-w-xl mx-auto leading-relaxed"
         >
-          Construí tu bienestar financiero junto a una comunidad que creció por 30 años
-          gracias a la confianza mutua. Empezá hoy, es gratis.
+          Gestiona tu economía con la plataforma financiera más avanzada del país.
+          Abre tu cuenta hoy mismo desde donde estés.
         </motion.p>
 
         {/* CTAs */}
@@ -72,23 +73,14 @@ export default function CTA() {
           transition={{ delay: 0.38, duration: 0.6 }}
           className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <a
-            href="#registro"
-            className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-4 rounded-2xl text-[16px] font-bold transition-all shadow-lg shadow-emerald-900/50 hover:shadow-glow hover:-translate-y-0.5 group"
-          >
-            Hazte socio — es gratis
-            <ArrowRight
-              size={16}
-              className="transition-transform group-hover:translate-x-1"
-            />
-          </a>
-          <a
-            href="#contacto-asesor"
-            className="inline-flex items-center gap-2 glass-dark px-8 py-4 rounded-2xl text-[16px] font-semibold text-white/70 hover:text-white transition-all hover:-translate-y-0.5"
-          >
+          <Button href="#registro" size="lg" className="w-full sm:w-auto">
+            Abrir mi cuenta gratis
+            <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+          </Button>
+          <Button href="#contacto-asesor" variant="glass" size="lg" className="w-full sm:w-auto">
             <MessageCircle size={16} />
             Hablar con un asesor
-          </a>
+          </Button>
         </motion.div>
 
         {/* Guarantees */}

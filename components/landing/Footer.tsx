@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Sparkles, MapPin, Phone, Mail, Facebook, Instagram, Twitter } from 'lucide-react';
+import Link from 'next/link';
 
 const LINKS = {
   Servicios: [
@@ -9,14 +10,14 @@ const LINKS = {
     { label: 'Créditos', href: '#servicios' },
     { label: 'Beneficios', href: '#servicios' },
     { label: 'Seguros', href: '#servicios' },
-    { label: 'Portal Digital', href: '#portal' },
+    { label: 'Portal Digital', href: '/login' },
   ],
   Empresa: [
-    { label: 'Nuestra historia', href: '#historia' },
+    { label: 'Nuestra historia', href: '#nosotros' },
     { label: 'Cómo funciona', href: '#como-funciona' },
-    { label: 'Asamblea anual', href: '#' },
-    { label: 'Responsabilidad social', href: '#' },
-    { label: 'Trabaja con nosotros', href: '#' },
+    { label: 'Asamblea anual', href: '/documentos' },
+    { label: 'Responsabilidad social', href: '#nosotros' },
+    { label: 'Trabaja con nosotros', href: '#contacto' },
   ],
   Documentos: [
     { label: 'Estatutos', href: '/documentos' },
@@ -26,18 +27,18 @@ const LINKS = {
     { label: 'Ver todos', href: '/documentos' },
   ],
   Soporte: [
-    { label: 'Centro de ayuda', href: '#' },
-    { label: 'Preguntas frecuentes', href: '#' },
+    { label: 'Centro de ayuda', href: '#contacto' },
+    { label: 'Preguntas frecuentes', href: '#contacto' },
     { label: 'Contacto', href: '#contacto' },
-    { label: 'Sucursales', href: '#' },
-    { label: 'Simulador de crédito', href: '#' },
+    { label: 'Sucursales', href: '#contacto' },
+    { label: 'Simulador de crédito', href: '/credito/solicitud' },
   ],
 } as const;
 
 const SOCIAL = [
-  { Icon: Facebook, href: '#', label: 'Facebook' },
-  { Icon: Instagram, href: '#', label: 'Instagram' },
-  { Icon: Twitter, href: '#', label: 'Twitter/X' },
+  { Icon: Facebook, href: 'https://facebook.com/coopvidayluz', label: 'Facebook' },
+  { Icon: Instagram, href: 'https://instagram.com/coopvidayluz', label: 'Instagram' },
+  { Icon: Twitter, href: 'https://twitter.com/coopvidayluz', label: 'Twitter/X' },
 ] as const;
 
 export default function Footer() {
@@ -57,8 +58,8 @@ export default function Footer() {
                 <span className="font-bold text-[15px] text-white tracking-tight">
                   Vida &amp; Luz
                 </span>
-                <span className="text-[9px] uppercase tracking-[0.18em] text-white/55 font-medium">
-                  Cooperativa
+                <span className="text-[9px] uppercase tracking-[0.18em] text-emerald-400 font-bold">
+                  Banca Cooperativa
                 </span>
               </div>
             </div>
@@ -96,12 +97,12 @@ export default function Footer() {
               <ul className="space-y-2.5">
                 {links.map((link) => (
                   <li key={link.label}>
-                    <a
+                    <Link
                       href={link.href}
                       className="text-white/60 hover:text-white/95 text-[13px] transition-colors duration-200"
                     >
                       {link.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -113,7 +114,7 @@ export default function Footer() {
         <div className="pt-7 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-center sm:text-left">
             <p className="text-white/55 text-[12px]">
-              © 2024 Cooperativa Vida &amp; Luz. Todos los derechos reservados.
+              © {new Date().getFullYear()} Cooperativa Vida &amp; Luz. Todos los derechos reservados.
             </p>
             <p className="text-white/42 text-[11px] mt-1">
               Regulada por INCOOP · RUC: 80001234-5 · Resolución INCOOP N° 3456/94
@@ -127,18 +128,20 @@ export default function Footer() {
                 key={label}
                 href={href}
                 aria-label={label}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-8 h-8 rounded-lg bg-white/[0.07] hover:bg-white/[0.14] flex items-center justify-center text-white/40 hover:text-white transition-all duration-200"
               >
                 <Icon size={14} />
               </a>
             ))}
             <div className="w-px h-5 bg-white/[0.1]" />
-            <a href="#" className="text-white/52 hover:text-white/80 text-[12px] transition-colors">
+            <Link href="/documentos" className="text-white/52 hover:text-white/80 text-[12px] transition-colors">
               Privacidad
-            </a>
-            <a href="#" className="text-white/52 hover:text-white/80 text-[12px] transition-colors">
+            </Link>
+            <Link href="/documentos" className="text-white/52 hover:text-white/80 text-[12px] transition-colors">
               Términos
-            </a>
+            </Link>
           </div>
         </div>
       </div>

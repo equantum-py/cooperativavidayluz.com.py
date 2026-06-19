@@ -1,26 +1,30 @@
 'use client';
 
+import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { ShieldCheck, ArrowRight, Lock } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden px-6">
+    <section className="relative min-h-[90vh] flex items-center overflow-hidden px-6 pt-20">
 
       {/* Fondo */}
       <div className="absolute inset-0">
-        <img
+        <Image
           src="/images/cooperativa/hero/hero-principal.jpeg"
           alt="Cooperativa Vida & Luz"
-          className="w-full h-full object-contain md:object-cover object-center"
+          fill
+          priority
+          className="object-cover object-center"
         />
 
         {/* Overlay */}
-        <div className="absolute inset-0 bg-void/70" />
+        <div className="absolute inset-0 bg-void/85 bg-gradient-to-t from-void via-void/80 to-transparent" />
       </div>
 
       {/* Contenido */}
-      <div className="relative max-w-5xl w-full mx-auto flex items-center">
+      <div className="relative max-w-5xl w-full mx-auto flex items-center z-10">
 
         <div className="text-left">
 
@@ -29,10 +33,10 @@ export default function Hero() {
             initial={{ opacity: 0, scale: 0.88, y: 12 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.55 }}
-            className="inline-flex items-center gap-2.5 glass-dark px-4 py-2 rounded-full text-[13px] font-medium text-emerald-400 mb-7"
+            className="inline-flex items-center gap-2.5 glass-dark px-4 py-2 rounded-full text-[13px] font-medium text-emerald-400 mb-6 border border-emerald-500/20 shadow-glow-sm"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            Desde 1997
+            <ShieldCheck size={16} />
+            Evolución Digital Cooperativa
           </motion.div>
 
           {/* H1 */}
@@ -46,12 +50,11 @@ export default function Hero() {
               stiffness: 75,
               damping: 16,
             }}
-            className="text-4xl md:text-5xl font-bold text-white leading-tight max-w-3xl"
+            className="text-4xl md:text-6xl font-bold text-white leading-tight max-w-3xl tracking-tight"
           >
-            Una idea nacida del corazón.
-            <br />
+            Tu bienestar financiero, <br />
             <span className="gradient-text-bright">
-              Una cooperativa construida por su gente.
+              simple y transparente.
             </span>
           </motion.h1>
 
@@ -60,33 +63,43 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.28 }}
-            className="mt-5 text-[15px] md:text-[16.5px] text-white/75 max-w-[620px] leading-relaxed"
+            className="mt-6 text-[16px] md:text-[18px] text-white/80 max-w-[580px] leading-relaxed font-light"
           >
-            Desde 1997 trabajamos con honestidad, ayuda mutua y compromiso para generar
-            oportunidades, bienestar y crecimiento para las familias, trabajadores y
-            emprendedores de nuestra comunidad.
+            La cooperativa moderna diseñada para potenciar tu economía. 
+            Cuentas, créditos y beneficios 100% digitales, con el respaldo de siempre.
           </motion.p>
 
-          {/* CTAs — visibles en el primer viewport mobile */}
+          {/* CTAs */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.42, duration: 0.6 }}
-            className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-3"
+            className="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4"
           >
-            <a
-              href="/credito/solicitud"
-              className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-7 py-3.5 rounded-2xl text-[15px] font-bold transition-all shadow-lg shadow-emerald-900/40 hover:shadow-glow hover:-translate-y-0.5 active:translate-y-0 group"
-            >
-              Solicitar crédito
-              <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
-            </a>
-            <a
-              href="#registro"
-              className="inline-flex items-center gap-2 glass-dark px-7 py-3.5 rounded-2xl text-[15px] font-semibold text-white/75 hover:text-white transition-all hover:-translate-y-0.5 active:translate-y-0"
-            >
-              Hazte socio
-            </a>
+            <Button href="/credito/solicitud" size="lg" className="w-full sm:w-auto">
+              Solicitar crédito ahora
+              <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+            </Button>
+            <Button href="#registro" variant="glass" size="lg" className="w-full sm:w-auto">
+              Abre tu cuenta gratis
+            </Button>
+          </motion.div>
+          
+          {/* Trust Indicators */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.7 }}
+            className="mt-12 flex items-center gap-6 text-sm text-white/50"
+          >
+             <div className="flex items-center gap-2">
+                <Lock size={16} className="text-emerald-500" />
+                <span>Seguridad bancaria 256-bit</span>
+             </div>
+             <div className="hidden sm:flex items-center gap-2">
+                <ShieldCheck size={16} className="text-emerald-500" />
+                <span>Regulado por INCOOP</span>
+             </div>
           </motion.div>
 
         </div>
