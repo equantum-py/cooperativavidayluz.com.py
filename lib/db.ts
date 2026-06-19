@@ -81,5 +81,67 @@ export function updateCreditoEstado(
   if (idx === -1) return null;
   records[idx].estado = estado;
   write(records);
+export type AsociacionRequest = {
+  id: string;
+  createdAt: string;
+  nombre: string;
+  ci: string;
+  fechaNacimiento: string;
+  telefono: string;
+  email: string;
+  ciudad: string;
+  direccion: string;
+  ocupacion: string;
+  observaciones?: string;
+  estado: CreditStatus;
+};
+
+const ASOC_FILE = path.join(DATA_DIR, 'asociaciones.json');
+
+function readAsoc(): AsociacionRequest[] {
+  ensureDir();
+  if (!fs.existsSync(ASOC_FILE)) return [];
+  try {
+    return JSON.parse(fs.readFileSync(ASOC_FILE, 'utf-8')) as AsociacionRequest[];
+  } catch {
+    return [];
+  }
+}
+
+function writeAsoc(data: AsociacionRequest[]) {
+  ensureDir();
+  fs.writeFileSync(ASOC_FILE, JSON.stringify(data, null, 2), 'utf-8');
+}
+
+export function getAllAsociaciones(): AsociacionRequest[] {
+  return readAsoc().sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+}
+
+export function createAsociacion(
+  data: Omit<AsociacionRequest, 'id' | 'createdAt' | 'estado'>
+): AsociacionRequest {
+  const records = readAsoc();
+  const record: AsociacionRequest = {
+    ...data,
+    id: `ASOC-${Date.now()}-${Math.random().toString(36).slice(2, 5).toUpperCase()}`,
+    createdAt: new Date().toISOString(),
+    estado: 'pendiente',
+  };
+  records.push(record);
+  writeAsoc(records);
+  return record;
+}
+
+export function updateAsociacionEstado(
+  id: string,
+  estado: CreditStatus
+): AsociacionRequest | null {
+  const records = readAsoc();
+  const idx = records.findIndex((r) => r.id === id);
+  if (idx === -1) return null;
+  records[idx].estado = estado;
+  writeAsoc(records);
   return records[idx];
 }

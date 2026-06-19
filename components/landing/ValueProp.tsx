@@ -64,7 +64,7 @@ export default function ValueProp() {
               transition={{ delay: 0.2, duration: 0.5 }}
               className="mt-10 flex flex-col sm:flex-row items-center gap-4"
             >
-              <Button href="/login" size="default" className="w-full sm:w-auto">
+              <Button href="/hazte-socio" size="default" className="w-full sm:w-auto">
                 Hazte socio
               </Button>
               <Button href="#servicios" variant="outline" className="w-full sm:w-auto">

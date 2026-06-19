@@ -27,11 +27,11 @@ export default function Hero() {
 
               {/* CTAs */}
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-10">
-                <Button href="/credito/solicitud" size="lg" className="w-full sm:w-auto shadow-md">
+                <Button href="/credito/simulador" size="lg" className="w-full sm:w-auto shadow-md">
                   Simular crédito
                   <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
                 </Button>
-                <Button href="/login" variant="outline" size="lg" className="w-full sm:w-auto bg-white">
+                <Button href="/hazte-socio" variant="outline" size="lg" className="w-full sm:w-auto bg-white">
                   Hazte socio
                 </Button>
               </div>

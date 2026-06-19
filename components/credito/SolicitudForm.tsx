@@ -184,10 +184,22 @@ function SuccessView({ id }: { id: string }) {
   );
 }
 
-/* ─── Formulario principal ───────────────────────────────────────────── */
+import { useSearchParams } from 'next/navigation';
 
 export default function SolicitudForm() {
-  const [form, setForm] = useState<FormData>(INITIAL);
+  const searchParams = useSearchParams();
+  const initialMonto = searchParams.get('monto') || '';
+  const initialPlazo = searchParams.get('plazo') || '';
+  const initialDestino = searchParams.get('destino') || '';
+
+  const INITIAL_WITH_PARAMS: FormData = {
+    ...INITIAL,
+    monto: initialMonto,
+    cuotas: initialPlazo,
+    destino: initialDestino,
+  };
+
+  const [form, setForm] = useState<FormData>(INITIAL_WITH_PARAMS);
   const [errors, setErrors] = useState<Errors>({});
   const [touched, setTouched] = useState<Partial<Record<keyof FormData, boolean>>>({});
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');

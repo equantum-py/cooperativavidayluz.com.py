@@ -27,7 +27,7 @@ const LINKS = {
     { label: 'Atención al socio', href: '#contacto' },
     { label: 'Preguntas frecuentes', href: '#contacto' },
     { label: 'Sucursales', href: '#contacto' },
-    { label: 'Simulador de crédito', href: '/credito/solicitud' },
+    { label: 'Simulador de crédito', href: '/credito/simulador' },
   ],
 } as const;
 

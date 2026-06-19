@@ -133,7 +133,7 @@ export default function Services() {
           viewport={{ once: true }}
           className="mt-16 text-center"
         >
-           <Button href="/credito/solicitud" size="lg">
+           <Button href="/credito/simulador" size="lg">
              Simular Crédito Ahora
            </Button>
         </motion.div>

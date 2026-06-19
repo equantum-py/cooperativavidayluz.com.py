@@ -56,7 +56,7 @@ export default function Navbar() {
             <Lock size={16} />
             Acceso Socios
           </Link>
-          <Button href="/login" size="sm" variant="default">
+          <Button href="/hazte-socio" size="sm" variant="default">
             Hazte socio
           </Button>
         </div>
@@ -127,7 +127,7 @@ export default function Navbar() {
                   <Lock size={16} className="mr-2" />
                   Acceso Socios
                 </Button>
-                <Button href="/login" className="w-full">
+                <Button href="/hazte-socio" className="w-full">
                   Hazte socio
                 </Button>
               </div>

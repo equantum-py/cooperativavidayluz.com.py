@@ -1,45 +1,35 @@
 import type { Metadata } from 'next';
-import { Suspense } from 'react';
 import Navbar from '@/components/landing/Navbar';
 import Footer from '@/components/landing/Footer';
-import SolicitudForm from '@/components/credito/SolicitudForm';
+import SimuladorForm from '@/components/credito/SimuladorForm';
 
 export const metadata: Metadata = {
-  title: 'Solicitar crédito | Cooperativa Vida & Luz',
-  description:
-    'Completá tu solicitud de crédito online. Proceso 100% digital, respuesta en 24–48 horas hábiles.',
+  title: 'Simulador de crédito | Cooperativa Vida & Luz',
+  description: 'Simula tu crédito online sin compromiso.',
 };
 
-export default function SolicitudPage() {
+export default function SimuladorPage() {
   return (
     <>
       <Navbar />
-
-      {/* Hero de página */}
       <div className="bg-emerald-700 pt-28 pb-12 px-6">
         <div className="max-w-2xl mx-auto text-center">
           <p className="text-emerald-200 text-[12px] font-bold uppercase tracking-[0.2em] mb-3">
-            Créditos
+            Simulador
           </p>
           <h1 className="text-[28px] md:text-[36px] font-bold text-white leading-tight mb-3">
-            Solicitud de crédito online
+            Calculá tu cuota
           </h1>
           <p className="text-emerald-100/80 text-[16px] leading-relaxed">
-            Completá el formulario y recibirás una respuesta en 24 a 48 horas hábiles.
-            Sin costo de solicitud.
+            Conocé el valor estimado de tu cuota mensual sin necesidad de ingresar tus datos personales.
           </p>
         </div>
       </div>
-
-      {/* Formulario */}
       <main className="bg-gray-50 min-h-screen py-10 px-6">
         <div className="max-w-2xl mx-auto">
-          <Suspense fallback={<div className="p-8 text-center text-gray-500">Cargando formulario...</div>}>
-            <SolicitudForm />
-          </Suspense>
+          <SimuladorForm />
         </div>
       </main>
-
       <Footer />
     </>
   );

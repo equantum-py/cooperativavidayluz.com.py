@@ -50,7 +50,7 @@ export default function CTA() {
           transition={{ delay: 0.2, duration: 0.5 }}
           className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <Button href="/login" size="lg" className="w-full sm:w-auto bg-[#006059] hover:bg-[#004c47] border-transparent">
+          <Button href="/hazte-socio" size="lg" className="w-full sm:w-auto bg-[#006059] hover:bg-[#004c47] border-transparent">
             Hazte socio ahora
             <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
           </Button>
