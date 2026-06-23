@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth';
+import { getUserByEmail } from '@/lib/users';
 
 export async function GET(request: NextRequest) {
   try {
@@ -20,8 +21,24 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    return NextResponse.json({ user: payload }, { status: 200 });
-  } catch (error) {
+    const user = await getUserByEmail(payload.email);
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Usuario no encontrado' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({
+      user: {
+        id: user.id,
+        email: user.email,
+        nombre: user.nombre,
+        rol: user.rol,
+        estado: user.estado,
+      },
+    }, { status: 200 });
+  } catch {
     return NextResponse.json(
       { error: 'Error en el servidor' },
       { status: 500 }

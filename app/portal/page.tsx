@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { FileText, ClipboardList, Star, User, ArrowRight } from 'lucide-react';
+import { FileText, ClipboardList, Star, User as UserIcon, ArrowRight } from 'lucide-react';
 import PortalSidebar from '@/components/portal/PortalSidebar';
 import PortalHeader from '@/components/portal/PortalHeader';
 
@@ -53,7 +53,7 @@ const ACCESS_CARDS = [
     id: 'perfil',
     title: 'Mi Perfil',
     description: 'Actualizá tus datos de contacto e información personal.',
-    Icon: User,
+    Icon: UserIcon,
     iconColor: '#7C3AED',
     iconBg: '#F5F3FF',
     linkLabel: 'Ver perfil',

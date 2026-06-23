@@ -1,21 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { verifyToken } from '@/lib/auth';
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Rutas públicas
-  if (pathname === '/' || pathname === '/login') {
+  const publicPaths = ['/', '/login', '/historia', '/hazte-socio', '/credito'];
+  if (publicPaths.some(path => pathname === path || pathname.startsWith(path + '/'))) {
     return NextResponse.next();
   }
 
-  // Rutas protegidas
-  if (pathname === '/portal' || pathname.startsWith('/portal/')) {
-    const token = request.cookies.get('auth_token')?.value;
+  // Obtener token
+  const token = request.cookies.get('auth_token')?.value;
 
-    console.log('MIDDLEWARE TOKEN:', !!token);
+  // Si no hay token, redirigir a login
+  if (!token) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
 
-    if (!token) {
-      return NextResponse.redirect(new URL('/login', request.url));
+  // Verificar token
+  const payload = verifyToken(token);
+  if (!payload) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
+
+  // Protección de rutas de admin
+  if (pathname.startsWith('/admin') || pathname.startsWith('/api/admin')) {
+    const allowedRoles = ['superadmin', 'gerencia'];
+    if (!allowedRoles.includes(payload.rol)) {
+      return NextResponse.json(
+        { error: 'No autorizado' },
+        { status: 403 }
+      );
     }
   }
 
@@ -23,5 +39,11 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/login', '/portal', '/portal/:path*'],
+  matcher: [
+    '/admin/:path*',
+    '/api/admin/:path*',
+    '/portal/:path*',
+    '/documentos/:path*',
+    '/credito/solicitud',
+  ],
 };

@@ -1,11 +1,11 @@
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-key';
+const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-key-cooperativa-vida-luz-2024-secure-production-key-do-not-use-in-prod';
 const JWT_EXPIRES_IN = '24h';
 
 export interface JWTPayload {
   id: number;
-  ci: string;
+  email: string;
   rol: string;
 }
 

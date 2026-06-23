@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { Metadata } from 'next';
 import Sidebar from '@/components/admin/Sidebar';
 import AdminHeader from '@/components/admin/AdminHeader';
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
 export default function AdminLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden font-sans">

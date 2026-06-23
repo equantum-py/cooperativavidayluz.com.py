@@ -1,43 +1,96 @@
 'use client';
 
-import { Wrench, CheckCircle } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Loader2 } from 'lucide-react';
+
+interface AuditEntry {
+  id: string;
+  usuarioId: string;
+  usuarioEmail: string;
+  accion: string;
+  entidad: string;
+  entidadId: string;
+  fecha: string;
+}
 
 export default function AuditoriaPage() {
+  const [entries, setEntries] = useState<AuditEntry[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/admin/auditoria')
+      .then(r => r.json())
+      .then(data => setEntries(data.data || []))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const accionColor: Record<string, string> = {
+    CREATE: 'bg-blue-100 text-blue-700',
+    UPDATE: 'bg-amber-100 text-amber-700',
+    DELETE: 'bg-red-100 text-red-700',
+    APPROVE: 'bg-emerald-100 text-emerald-700',
+    REJECT: 'bg-red-100 text-red-700',
+    LOGIN: 'bg-purple-100 text-purple-700',
+    LOGOUT: 'bg-slate-100 text-slate-700',
+  };
+
   return (
     <>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-            Bitácora de Auditoría
-            <span className="bg-amber-100 text-amber-800 text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wide">
-              En desarrollo
-            </span>
-          </h1>
+          <h1 className="text-2xl font-bold text-gray-900">Bitácora de Auditoría</h1>
           <p className="text-sm text-gray-500 mt-1">Trazabilidad completa de operaciones del sistema</p>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-8 text-center">
-        <div className="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-gray-100">
-          <Wrench className="text-gray-400" size={32} />
+      {loading ? (
+        <div className="flex justify-center py-20">
+          <Loader2 className="animate-spin text-emerald-600" size={32} />
         </div>
-        <h2 className="text-lg font-bold text-gray-900 mb-2">Módulo en Construcción</h2>
-        <p className="text-gray-500 text-sm max-w-md mx-auto mb-6">
-          Esta sección del sistema ERP está programada para la próxima fase de implementación técnica.
-        </p>
-
-        <div className="text-left bg-gray-50 p-6 rounded-xl border border-gray-100 max-w-2xl mx-auto">
-          <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wider mb-4 border-b border-gray-200 pb-2">
-            Funcionalidades Futuras
-          </h3>
-          <ul className="space-y-3 text-sm text-gray-600">
-            <li className="flex items-center gap-2"><CheckCircle size={16} className="text-emerald-500" /> Registro inmutable de acciones CREATE, UPDATE, DELETE.</li>
-            <li className="flex items-center gap-2"><CheckCircle size={16} className="text-emerald-500" /> Filtro de eventos por Usuario, Fecha y Entidad.</li>
-            <li className="flex items-center gap-2"><CheckCircle size={16} className="text-emerald-500" /> Captura de Deltas (Valor Anterior vs Valor Nuevo).</li>
-            <li className="flex items-center gap-2"><CheckCircle size={16} className="text-emerald-500" /> Alertas de seguridad por accesos fuera de horario.</li>
-          </ul>
+      ) : (
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead>
+                <tr className="text-gray-500 border-b border-gray-100 bg-gray-50">
+                  <th className="px-6 py-3 font-medium">Fecha</th>
+                  <th className="px-6 py-3 font-medium">Usuario</th>
+                  <th className="px-6 py-3 font-medium">Acción</th>
+                  <th className="px-6 py-3 font-medium">Entidad</th>
+                  <th className="px-6 py-3 font-medium">ID</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-50">
+                {entries.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="py-8 text-center text-gray-500">
+                      No hay registros de auditoría
+                    </td>
+                  </tr>
+                ) : (
+                  entries.map(entry => (
+                    <tr key={entry.id} className="hover:bg-gray-50 transition-colors">
+                      <td className="px-6 py-4 text-gray-500 text-xs">
+                        {new Date(entry.fecha).toLocaleString()}
+                      </td>
+                      <td className="px-6 py-4 text-gray-900 font-medium text-xs">
+                        {entry.usuarioEmail}
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className={`text-xs font-bold px-2 py-1 rounded ${accionColor[entry.accion] || 'bg-gray-100 text-gray-700'}`}>
+                          {entry.accion}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-gray-600">{entry.entidad}</td>
+                      <td className="px-6 py-4 text-gray-500 font-mono text-xs">{entry.entidadId.slice(0, 8)}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

@@ -1,44 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-import { comparePassword } from '@/lib/password';
+import { validateUserPassword } from '@/lib/users';
 import { signToken } from '@/lib/auth';
-
-const prisma = new PrismaClient();
 
 export async function POST(request: NextRequest) {
   try {
-    const { ci, password } = await request.json();
+    const { email, password } = await request.json();
 
-    if (!ci || !password) {
+    if (!email || !password) {
       return NextResponse.json(
-        { error: 'CI y contraseña son requeridos' },
+        { error: 'Email y contraseña son requeridos' },
         { status: 400 }
       );
     }
 
-    const user = await prisma.user.findUnique({
-      where: { ci },
-    });
+    const user = await validateUserPassword(email, password);
 
     if (!user) {
       return NextResponse.json(
-        { error: 'CI o contraseña inválidos' },
-        { status: 401 }
-      );
-    }
-
-    const isValid = await comparePassword(password, user.password);
-
-    if (!isValid) {
-      return NextResponse.json(
-        { error: 'CI o contraseña inválidos' },
+        { error: 'Email o contraseña inválidos' },
         { status: 401 }
       );
     }
 
     const token = signToken({
-      id: user.id,
-      ci: user.ci,
+      id: parseInt(user.id, 36),
+      email: user.email,
       rol: user.rol,
     });
 
@@ -48,7 +34,7 @@ export async function POST(request: NextRequest) {
         token,
         user: {
           id: user.id,
-          ci: user.ci,
+          email: user.email,
           nombre: user.nombre,
           rol: user.rol,
           estado: user.estado,
@@ -66,23 +52,11 @@ export async function POST(request: NextRequest) {
 
     return response;
   } catch (error: any) {
-    console.error('[LOGIN_ERROR]', {
-      name: error?.name,
-      message: error?.message,
-      code: error?.code,
-      meta: error?.meta,
-      stack: error?.stack,
-    });
+    console.error('[LOGIN_ERROR]', error);
 
     return NextResponse.json(
       {
         error: 'Error en el servidor',
-        debug: {
-          name: error?.name,
-          message: error?.message,
-          code: error?.code,
-          meta: error?.meta,
-        },
       },
       { status: 500 }
     );
